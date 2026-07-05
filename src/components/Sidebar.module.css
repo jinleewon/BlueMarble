@@ -1,0 +1,268 @@
+.sidebar {
+  width: 320px;
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.title {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800; /* ExtraBold */
+  font-size: 20px;
+  color: white;
+  margin-bottom: 0px;
+}
+
+.logTime {
+  color: #9ca3af;
+  margin-right: 8px;
+}
+
+.cashContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.floatingDiff {
+  position: absolute;
+  top: -20px;
+  right: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  animation: floatUp 2s ease-out forwards;
+  pointer-events: none;
+  z-index: 100;
+  text-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+}
+
+.floatingDiff.positive {
+  color: #10B981; /* Green */
+}
+
+.floatingDiff.negative {
+  color: #EF4444; /* Red */
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.8);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0px) scale(1.1);
+  }
+  20% {
+    transform: translateY(-5px) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translateY(-20px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(1);
+  }
+}
+
+.playerCard {
+  background-color: white;
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  filter: drop-shadow(0px 4px 0px #d1d5db);
+  transition: all 0.2s;
+}
+
+.playerCard.active {
+  background-color: #2a66c7;
+  filter: drop-shadow(0px 4px 0px #1e4b91);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.name {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800; /* ExtraBold */
+  font-size: 16px;
+  color: #111827;
+}
+
+.active .name {
+  color: white;
+}
+
+.cash {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; /* SemiBold */
+  font-size: 14px;
+  color: #2a66c7;
+}
+
+.active .cash {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.turnBadge {
+  background-color: #fad02c;
+  color: #1e4b91;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900; /* Black */
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.keptCards {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.keptCard {
+  background: linear-gradient(135deg, #fef08a 0%, #facc15 100%);
+  color: #854d0e;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.properties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+}
+
+.propertyBadge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  text-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+}
+
+.propName {
+  font-weight: 800;
+}
+
+.propAssets {
+  display: flex;
+  gap: 1px;
+}
+
+/* Make sure the control buttons match the right sidebar logic if any, but since we placed it here earlier, let's style it cleanly */
+.controls {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn {
+  background-color: #2a66c7;
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  filter: drop-shadow(0px 4px 0px #1e4b91);
+  transition: transform 0.1s;
+}
+
+.btn:hover {
+  transform: translateY(2px);
+  filter: drop-shadow(0px 2px 0px #1e4b91);
+}
+
+.btn:disabled {
+  background-color: #d1d5db;
+  filter: drop-shadow(0px 4px 0px #9ca3af);
+  cursor: not-allowed;
+}
+
+.btn:active {
+  transform: translateY(4px);
+  filter: drop-shadow(0px 0px 0px #1e4b91);
+}
+
+.btn.altBtn {
+  background-color: white;
+  color: #2a66c7;
+  filter: drop-shadow(0px 4px 0px #d1d5db);
+}
+
+.btn.altBtn:hover {
+  filter: drop-shadow(0px 2px 0px #d1d5db);
+}
+
+.btnRow {
+  display: flex;
+  gap: 12px;
+}
+
+.btnRow .btn {
+  flex: 1;
+}
+
+.logBox {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  height: 150px;
+  overflow-y: auto;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.logEntry {
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  padding-bottom: 4px;
+}

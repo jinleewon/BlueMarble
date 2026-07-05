@@ -1,0 +1,188 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modalContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal {
+  position: relative;
+  width: 302px;
+  height: 612px;
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+.closeBtn {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+/* Header Banner */
+.headerBanner {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.cityName {
+  font-weight: 900;
+  font-size: 36px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  line-height: 1.1;
+  margin-top: 10px;
+}
+
+.countryName {
+  font-weight: 700;
+  font-size: 14px;
+  opacity: 0.9;
+  letter-spacing: 2px;
+  margin-top: 4px;
+}
+
+/* Landmark Visual Placeholder */
+.landmarkVisual {
+  width: 100%;
+  height: 160px;
+  background-color: #f3f4f6; /* gray-100 placeholder */
+  border-bottom: 2px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.landmarkImage {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-bottom: 2px solid #e5e7eb;
+  flex-shrink: 0;
+  display: block;
+}
+
+/* Card Body */
+.cardBody {
+  width: 100%;
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+}
+
+.purchasePriceBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.purchaseLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.purchaseAmount {
+  font-size: 32px;
+  font-weight: 900;
+  color: #111827;
+}
+
+.divider {
+  width: 100%;
+  height: 2px;
+  background-color: #e5e7eb;
+  margin-bottom: 20px;
+}
+
+/* Rent Table */
+.rentTable {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.rentRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.rentLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.rentAmount {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* Card Footer */
+.cardFooter {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  font-size: 12px;
+  font-weight: 800;
+  color: #9ca3af;
+  letter-spacing: 1px;
+}
+
+.brandLeft {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}

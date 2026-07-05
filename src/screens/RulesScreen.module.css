@@ -1,0 +1,356 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.bgDecoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 1) 1px, transparent 1px);
+  background-size: 100px 100px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow {
+  position: fixed;
+  width: 1000px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 80px;
+  z-index: 20;
+}
+
+.backBtn {
+  background-color: white;
+  border-radius: 20px;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  filter: drop-shadow(0px 6px 0px #d1d5db);
+  transition: all 0.2s;
+  border: none;
+}
+
+.backBtn:hover {
+  transform: translateY(2px);
+  filter: drop-shadow(0px 4px 0px #d1d5db);
+}
+
+.backBtnText {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 16px;
+  color: #2a66c7;
+}
+
+.title {
+  font-family: 'DM Sans', sans-serif; /* fallback */
+  font-weight: 900;
+  font-size: 64px;
+  color: white;
+  text-shadow: 0px 8px 0px #1e4b91;
+  margin: 0;
+}
+
+.placeholder {
+  width: 120px;
+}
+
+.contentScroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 40px 0 100px 0;
+  z-index: 10;
+}
+
+.sectionCard {
+  background-color: white;
+  border-radius: 48px;
+  width: 1000px;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.13);
+}
+
+.sectionTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  color: #2a66c7;
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.ruleText {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px;
+  color: #111827;
+  line-height: 1.6;
+}
+
+.highlight {
+  font-weight: 900;
+  color: #2a66c7;
+}
+
+/* Step list */
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.stepRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.stepNumber {
+  background-color: #2a66c7;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stepTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  color: #111827;
+  margin: 0;
+}
+
+.stepDesc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  color: rgba(17, 24, 39, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Buildings */
+.buildingsRow {
+  display: flex;
+  gap: 24px;
+}
+
+.buildingCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.buildingIconWrapper {
+  width: 100px;
+  height: 100px;
+  border-radius: 24px;
+  border: 4px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  box-shadow: 0 8px 0px rgba(0,0,0,0.06);
+}
+
+.bHome { background-color: #63cc7a; }
+.bBuilding { background-color: #2a66c7; }
+.bHotel { background-color: #ef4444; }
+
+.bTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  color: #111827;
+  margin: 0;
+}
+
+.bPrice {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #2a66c7;
+  margin: 0;
+}
+
+.bDesc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: rgba(17, 24, 39, 0.7);
+  margin: 0;
+}
+
+/* Specials */
+.specialsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.specialCard {
+  border: 1px solid #d1d5db;
+  border-radius: 24px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.specialIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.specialContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.specialHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.specialTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  color: #111827;
+  margin: 0;
+}
+
+.specialBadge {
+  background-color: #2a66c7;
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.specialDesc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: rgba(17, 24, 39, 0.6);
+  margin: 0;
+}
+
+/* Win Condition */
+.winBox {
+  background-color: #2a66c7;
+  border-radius: 24px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  width: 100%;
+}
+
+.winTrophy {
+  font-size: 64px;
+}
+
+.winTitle {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  color: white;
+  margin: 0;
+}
+
+.winDesc {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.6;
+  padding-bottom: 60px;
+}
+
+.fCopy {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+  margin: 0;
+}
+
+.fVer {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
