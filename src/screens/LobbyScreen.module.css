@@ -36,7 +36,8 @@
   background-color: white;
   border-radius: 32px;
   width: 680px;
-  height: 480px;
+  min-height: 480px;
+  height: auto;
   position: relative;
   z-index: 10;
   display: flex;
