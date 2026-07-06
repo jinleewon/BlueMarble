@@ -32,7 +32,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       dispatch({ type: 'SYNC_STATE', payload: newState } as any);
     };
 
-    const handleRequestStateSync = () => {
+    const handleRequestStateSync = (data?: { nickname?: string }) => {
       // Send current state to the server so it can be relayed to the new player
       const roomCode = localStorage.getItem('blueMarbleRoomCode');
       if (roomCode) {
@@ -43,7 +43,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           dispatchSync({ 
             type: 'ADD_PLAYER', 
             payload: { 
-              name: `Player ${state.players.length + 1}`, 
+              name: data?.nickname || `Player ${state.players.length + 1}`, 
               color: ['#3B82F6', '#10B981', '#F59E0B'][state.players.length - 1] 
             }
           });
