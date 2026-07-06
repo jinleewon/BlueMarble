@@ -774,6 +774,13 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
       };
     }
 
+    case 'RENAME_PLAYER': {
+      const updatedPlayers = state.players.map(p => 
+        p.id === action.payload.playerId ? { ...p, name: action.payload.name } : p
+      );
+      return { ...state, players: updatedPlayers };
+    }
+
     default:
       return state;
   }

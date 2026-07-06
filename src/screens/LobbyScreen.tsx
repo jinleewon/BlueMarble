@@ -13,6 +13,7 @@ type LobbyMode = 'SELECT' | 'CREATE' | 'JOIN';
 const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
   const { state, dispatch } = useGame();
   const [mode, setMode] = useState<LobbyMode>('SELECT');
+  const [nickname, setNickname] = useState('');
   const [code, setCode] = useState('');
   const [roomCode, setRoomCode] = useState('');
   const [isCopied, setIsCopied] = useState(false);
@@ -22,6 +23,11 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
   // Generate random code when entering CREATE mode
   useEffect(() => {
     if (mode === 'CREATE' && !roomCode) {
+      if (!nickname.trim()) {
+        alert("닉네임을 먼저 입력해주세요!");
+        setMode('SELECT');
+        return;
+      }
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
       let result = '';
       for (let i = 0; i < 6; i++) {
@@ -31,8 +37,9 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
       localStorage.setItem('blueMarbleRoomCode', result);
       localStorage.setItem('myPlayerId', '1'); // Host is always Player 1
       socket.emit('create_room', result);
+      dispatch({ type: 'RENAME_PLAYER', payload: { playerId: 1, name: nickname } });
     }
-  }, [mode, roomCode]);
+  }, [mode, roomCode, nickname, dispatch]);
 
   // Focus input automatically when JOIN mode is entered
   useEffect(() => {
@@ -55,8 +62,13 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
   };
 
   const handleJoinSubmit = () => {
+    if (!nickname.trim()) {
+      alert("닉네임을 먼저 입력해주세요!");
+      setMode('SELECT');
+      return;
+    }
     if (code.length === 6) {
-      socket.emit('join_room', code, (response: any) => {
+      socket.emit('join_room', { roomCode: code, nickname }, (response: any) => {
         if (response.success) {
           setRoomCode(code);
           localStorage.setItem('blueMarbleRoomCode', code);
@@ -82,14 +94,42 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
           <button className={styles.closeBtn} onClick={onBack}>✕</button>
           <div className={styles.modalTitle}>게임 시작</div>
           
+          <div style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{ color: '#9ca3af', fontSize: '14px', fontWeight: 'bold' }}>닉네임 (Nickname)</label>
+            <input 
+              type="text" 
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              placeholder="닉네임을 입력하세요"
+              style={{
+                padding: '12px',
+                borderRadius: '8px',
+                border: '1px solid #374151',
+                backgroundColor: '#1f2937',
+                color: 'white',
+                fontSize: '16px',
+                outline: 'none',
+                width: '100%',
+                boxSizing: 'border-box'
+              }}
+              maxLength={10}
+            />
+          </div>
+
           <div className={styles.optionsContainer}>
-            <div className={styles.optionCard} onClick={() => setMode('JOIN')}>
+            <div className={styles.optionCard} onClick={() => {
+              if (!nickname.trim()) { alert("닉네임을 입력해주세요!"); return; }
+              setMode('JOIN');
+            }}>
               <div className={styles.optionIcon}>👥</div>
               <div className={styles.optionTitle}>참여하기</div>
               <button className={`${styles.btn} ${styles.btnPrimary}`} style={{padding: '16px 32px', fontSize: '16px'}}>코드 입력</button>
             </div>
             
-            <div className={styles.optionCard} onClick={() => setMode('CREATE')}>
+            <div className={styles.optionCard} onClick={() => {
+              if (!nickname.trim()) { alert("닉네임을 입력해주세요!"); return; }
+              setMode('CREATE');
+            }}>
               <div className={styles.optionIcon}>➕</div>
               <div className={styles.optionTitle}>방 만들기</div>
               <button className={`${styles.btn} ${styles.btnPrimary}`} style={{padding: '16px 32px', fontSize: '16px'}}>생성하기</button>

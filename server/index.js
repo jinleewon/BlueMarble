@@ -25,15 +25,19 @@ io.on('connection', (socket) => {
     console.log(`Room created: ${roomCode} by ${socket.id}`);
   });
 
-  socket.on('join_room', (roomCode, callback) => {
+  socket.on('join_room', (data, callback) => {
+    // data can be a string (roomCode) or an object { roomCode, nickname }
+    const roomCode = typeof data === 'string' ? data : data.roomCode;
+    const nickname = typeof data === 'string' ? null : data.nickname;
+    
     const room = rooms[roomCode];
     if (room) {
       socket.join(roomCode);
       room.clients.push(socket.id);
       const assignedId = room.clients.length;
-      console.log(`User ${socket.id} joined room ${roomCode} as Player ${assignedId}`);
-      // Request full state sync from the host
-      io.to(room.host).emit('request_state_sync');
+      console.log(`User ${socket.id} joined room ${roomCode} as Player ${assignedId} (${nickname})`);
+      // Request full state sync from the host and pass the new player's nickname
+      io.to(room.host).emit('request_state_sync', { nickname });
       if (typeof callback === 'function') callback({ success: true, playerId: assignedId });
     } else {
       console.log(`User ${socket.id} tried to join non-existent room ${roomCode}`);

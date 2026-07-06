@@ -92,6 +92,7 @@ export type GameAction =
   | { type: 'PAY_PENDING' }
   | { type: 'SET_PLAYER_TOKEN'; payload: { playerId: number, tokenId: string } }
   | { type: 'ADD_PLAYER'; payload: { name: string, color: string } }
+  | { type: 'RENAME_PLAYER'; payload: { playerId: number, name: string } }
   | { type: 'ADD_MESSAGE'; payload: string }
   | { type: 'USE_ESCAPE_CARD' }
   | { type: 'USE_EXEMPTION_CARD' };
