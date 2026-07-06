@@ -49,9 +49,34 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
   }, [mode]);
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText(roomCode);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(roomCode).then(() => {
+        setIsCopied(true);
+        setTimeout(() => setIsCopied(false), 2000);
+      }).catch(err => {
+        console.error('Failed to copy code: ', err);
+      });
+    } else {
+      // Fallback for non-secure contexts (e.g. testing over local IP)
+      const textArea = document.createElement("textarea");
+      textArea.value = roomCode;
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          setIsCopied(true);
+          setTimeout(() => setIsCopied(false), 2000);
+        }
+      } catch (err) {
+        console.error('Fallback copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
   };
 
   const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
