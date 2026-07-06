@@ -582,8 +582,8 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
     }
 
     case 'END_TURN': {
-      // 턴 종료 요청이 유효한 타이밍인지 확인 (더블클릭 방지)
-      if (state.turnPhase === 'pre_roll' || state.turnPhase === 'move' || state.turnPhase === 'idle' || state.turnPhase === 'roll') {
+      // 턴 종료 요청이 유효한 타이밍인지 확인 (더블클릭 방지 및 게임 종료 시 무시)
+      if (state.turnPhase === 'pre_roll' || state.turnPhase === 'move' || state.turnPhase === 'idle' || state.turnPhase === 'roll' || state.turnPhase === 'game_over') {
         return state;
       }
 
