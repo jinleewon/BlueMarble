@@ -6,6 +6,7 @@ import DiceOverlay from './components/DiceOverlay';
 import ActionModal from './components/ActionModal';
 import ChanceModal from './components/ChanceModal';
 import InsolventModal from './components/InsolventModal';
+import DeedResultModal from './components/DeedResultModal';
 import HomeScreen from './screens/HomeScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import RulesScreen from './screens/RulesScreen';
@@ -25,8 +26,12 @@ const MainApp: React.FC = () => {
     }
   }, [state.turnPhase, currentScreen]);
 
+  const isMyTurn = state.players[state.currentPlayerIndex]?.id === Number(localStorage.getItem('myPlayerId'));
+
   // Watch for dice roll and trigger move after delay
   useEffect(() => {
+    if (!isMyTurn) return; // Only active player's client dispatches automatic events
+
     if (state.turnPhase === 'move' && state.diceResult) {
       const sum = state.diceResult[0] + state.diceResult[1];
       const timer = setTimeout(() => {
@@ -39,7 +44,7 @@ const MainApp: React.FC = () => {
       }, 2500);
       return () => clearTimeout(timer);
     }
-  }, [state.turnPhase, state.diceResult, dispatch]);
+  }, [state.turnPhase, state.diceResult, dispatch, isMyTurn]);
 
   const renderGame = () => (
     <div style={{ 
@@ -64,6 +69,9 @@ const MainApp: React.FC = () => {
 
       {/* Insolvent modal */}
       {state.turnPhase === 'insolvent' && <InsolventModal />}
+
+      {/* Property Deed Result modal */}
+      {state.turnPhase === 'property_deed_result' && <DeedResultModal />}
       
       <Board />
     </div>

@@ -308,7 +308,16 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
         ...state,
         players: updatedPlayers,
         board: updatedBoard,
-        messageLog: [...state.messageLog, `${currentPlayer.name}님이 ${state.board[tileId].name}의 건물을 구매했습니다. (-${cost}원)`]
+        turnPhase: 'property_deed_result',
+        lastPurchasedTileId: tileId,
+        messageLog: [...state.messageLog, `${currentPlayer.name}님이 ${state.board[tileId].name}에 투자했습니다!`]
+      };
+    }
+
+    case 'FINISH_PROPERTY_RESULT': {
+      return {
+        ...state,
+        turnPhase: 'idle'
       };
     }
 

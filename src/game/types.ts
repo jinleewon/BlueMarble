@@ -43,7 +43,7 @@ export interface Tile {
   hotels?: number;
 }
 
-export type TurnPhase = 'pre_roll' | 'roll' | 'move' | 'action' | 'chance_card' | 'insolvent' | 'idle' | 'island_fail';
+export type TurnPhase = 'pre_roll' | 'roll' | 'move' | 'action' | 'chance_card' | 'insolvent' | 'idle' | 'island_fail' | 'property_deed_result';
 
 export interface ChanceCard {
   id: string;
@@ -66,6 +66,7 @@ export interface GameState {
   activeChanceCard?: ChanceCard | null;
   pendingPayment?: { amount: number; to: number | 'bank'; reason: string } | null;
   lastMovementType?: 'forward' | 'backward' | 'teleport';
+  lastPurchasedTileId?: number | null;
 }
 
 export type GameAction =
@@ -73,6 +74,7 @@ export type GameAction =
   | { type: 'MOVE_PLAYER'; payload: { steps: number } }
   | { type: 'SPACE_TRAVEL_MOVE'; payload: { targetTileId: number } }
   | { type: 'BUY_PROPERTY'; payload: { tileId: number; buyLand: boolean; buyVilla: boolean; buyBuilding: boolean; buyHotel: boolean; cost: number } }
+  | { type: 'FINISH_PROPERTY_RESULT' }
   | { type: 'PAY_TOLL'; payload: { tileId: number; amount: number; ownerId: number } }
   | { type: 'FUND_DONATE'; payload: { amount: number } }
   | { type: 'FUND_RECEIVE' }

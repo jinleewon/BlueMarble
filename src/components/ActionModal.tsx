@@ -35,19 +35,21 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
       type: 'BUY_PROPERTY', 
       payload: { tileId, buyLand, buyVilla, buyBuilding, buyHotel, cost } 
     });
-    handleEndTurn();
   };
 
   const formatMoney = (amount: number) => {
     return amount >= 10000 ? `${amount / 10000}만` : amount;
   };
 
+  const myPlayerId = Number(localStorage.getItem('myPlayerId'));
+  const isMyTurn = currentPlayer.id === myPlayerId;
+
   // Special tiles (Start, Island, Space, Chance, Fund)
   React.useEffect(() => {
-    if (tile && (tile.type === 'chance' || tile.type === 'start')) {
+    if (isMyTurn && tile && (tile.type === 'chance' || tile.type === 'start')) {
       dispatch({ type: 'END_TURN' });
     }
-  }, [tile, dispatch]);
+  }, [tile, dispatch, isMyTurn]);
 
   if (tile.type === 'chance' || tile.type === 'start') {
     return null;
@@ -68,9 +70,13 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
             <p className={styles.subtitle}>{subtitle}</p>
           </div>
           <div className={styles.actions}>
-            <button className={`${styles.btn} ${styles.btnBuy}`} onClick={handleEndTurn}>
-              확인
-            </button>
+            {isMyTurn ? (
+              <button className={`${styles.btn} ${styles.btnBuy}`} onClick={handleEndTurn}>
+                확인
+              </button>
+            ) : (
+              <div style={{ color: '#6b7280', padding: '10px' }}>{currentPlayer.name}님이 확인 중입니다...</div>
+            )}
           </div>
         </div>
       </div>
@@ -155,16 +161,22 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
           </div>
 
           <div className={styles.actions}>
-            <button className={`${styles.btn} ${styles.btnPass}`} onClick={handleEndTurn}>
-              패스
-            </button>
-            <button 
-              className={`${styles.btn} ${styles.btnBuy}`} 
-              onClick={handleBuy}
-              disabled={!canAfford || totalCost === 0}
-            >
-              구매하기
-            </button>
+            {isMyTurn ? (
+              <>
+                <button className={`${styles.btn} ${styles.btnPass}`} onClick={handleEndTurn}>
+                  패스
+                </button>
+                <button 
+                  className={`${styles.btn} ${styles.btnBuy}`} 
+                  onClick={handleBuy}
+                  disabled={!canAfford || totalCost === 0}
+                >
+                  구매하기
+                </button>
+              </>
+            ) : (
+              <div style={{ color: '#6b7280', padding: '10px' }}>{currentPlayer.name}님이 구매를 고민 중입니다...</div>
+            )}
           </div>
         </div>
       </div>
@@ -213,14 +225,20 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
           </div>
 
           <div className={styles.actions}>
-            {currentPlayer.hasExemptionCard && (
-              <button className={`${styles.btn} ${styles.btnPass}`} style={{ backgroundColor: '#facc15', color: '#b45309', border: '1px solid #eab308' }} onClick={handleUseExemption}>
-                우대권 사용
-              </button>
+            {isMyTurn ? (
+              <>
+                {currentPlayer.hasExemptionCard && (
+                  <button className={`${styles.btn} ${styles.btnPass}`} style={{ backgroundColor: '#facc15', color: '#b45309', border: '1px solid #eab308' }} onClick={handleUseExemption}>
+                    우대권 사용
+                  </button>
+                )}
+                <button className={`${styles.btn} ${styles.btnPay}`} onClick={handlePayToll}>
+                  {currentPlayer.cash < tollAmount ? '파산/매각/대출 진행' : '지불하기'}
+                </button>
+              </>
+            ) : (
+              <div style={{ color: '#ef4444', padding: '10px' }}>{currentPlayer.name}님이 통행료를 지불 중입니다...</div>
             )}
-            <button className={`${styles.btn} ${styles.btnPay}`} onClick={handlePayToll}>
-              {currentPlayer.cash < tollAmount ? '파산/매각/대출 진행' : '지불하기'}
-            </button>
           </div>
         </div>
       </div>

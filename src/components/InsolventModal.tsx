@@ -11,7 +11,11 @@ const InsolventModal: React.FC = () => {
   const { amount, reason } = state.pendingPayment;
   const canPay = currentPlayer.cash >= amount;
 
+  const myPlayerId = Number(localStorage.getItem('myPlayerId'));
+  const isMyTurn = currentPlayer.id === myPlayerId;
+
   const handlePay = () => {
+    if (!isMyTurn) return;
     dispatch({ type: 'PAY_PENDING' });
     if (reason === '통행료') {
       dispatch({ type: 'END_TURN' });
@@ -19,6 +23,7 @@ const InsolventModal: React.FC = () => {
   };
 
   const handleBankruptcy = () => {
+    if (!isMyTurn) return;
     if (window.confirm('정말 파산하시겠습니까? 모든 자산이 몰수되고 패배하게 됩니다.')) {
       dispatch({ type: 'DECLARE_BANKRUPTCY' });
       dispatch({ type: 'END_TURN' });
@@ -26,10 +31,12 @@ const InsolventModal: React.FC = () => {
   };
 
   const handleTakeLoan = () => {
+    if (!isMyTurn) return;
     dispatch({ type: 'TAKE_LOAN' });
   };
 
   const handleSellProperty = (tileId: number) => {
+    if (!isMyTurn) return;
     if (confirm('이 자산을 반값에 매각하시겠습니까?')) {
       dispatch({ type: 'SELL_PROPERTY', payload: { tileId } });
     }
@@ -51,24 +58,30 @@ const InsolventModal: React.FC = () => {
           {!canPay && <p style={{ color: '#ef4444', marginTop: '10px' }}>자금이 부족합니다. 대출을 받거나 자산을 매각하세요.</p>}
 
           <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
-            {canPay ? (
-              <button className={`${styles.btn} ${styles.buyBtn}`} onClick={handlePay}>
-                지불하기
-              </button>
+            {isMyTurn ? (
+              canPay ? (
+                <button className={`${styles.btn} ${styles.buyBtn}`} onClick={handlePay}>
+                  지불하기
+                </button>
+              ) : (
+                <>
+                  <button 
+                    className={styles.btn} 
+                    style={{ backgroundColor: '#F59E0B' }}
+                    onClick={handleTakeLoan}
+                    disabled={currentPlayer.loanAmount > 0}
+                  >
+                    은행 대출 (100만원)
+                  </button>
+                  <button className={`${styles.btn} ${styles.passBtn}`} onClick={handleBankruptcy}>
+                    파산하기
+                  </button>
+                </>
+              )
             ) : (
-              <>
-                <button 
-                  className={styles.btn} 
-                  style={{ backgroundColor: '#F59E0B' }}
-                  onClick={handleTakeLoan}
-                  disabled={currentPlayer.loanAmount > 0}
-                >
-                  은행 대출 (100만원)
-                </button>
-                <button className={`${styles.btn} ${styles.passBtn}`} onClick={handleBankruptcy}>
-                  파산하기
-                </button>
-              </>
+              <div style={{ color: '#ef4444', fontWeight: 'bold', padding: '10px' }}>
+                {currentPlayer.name}님이 자금을 마련 중입니다...
+              </div>
             )}
           </div>
 

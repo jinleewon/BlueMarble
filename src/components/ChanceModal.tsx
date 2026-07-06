@@ -98,20 +98,29 @@ const MovementCardContent: React.FC<{ card: ChanceCard }> = ({ card }) => {
 
 const ChanceModal: React.FC = () => {
   const { state, dispatch } = useGame();
-  const [flipped, setFlipped] = useState(false);
+  
+  const myPlayerId = Number(localStorage.getItem('myPlayerId'));
+  const currentPlayer = state.players[state.currentPlayerIndex];
+  const isMyTurn = currentPlayer.id === myPlayerId;
+
+  const card = state.activeChanceCard;
+  
+  // If activeChanceCard is not null, it means the card was drawn by the active player, so we consider it flipped.
+  const [localFlipped, setLocalFlipped] = useState(false);
+  const isFlipped = !!card || localFlipped;
 
   if (state.turnPhase !== 'chance_card') return null;
 
-  const card = state.activeChanceCard;
-
   const handleCardClick = () => {
-    if (!flipped) {
+    if (!isMyTurn) return;
+    if (!isFlipped) {
       dispatch({ type: 'DRAW_CHANCE_CARD' });
-      setFlipped(true);
+      setLocalFlipped(true);
     }
   };
 
   const handleConfirm = () => {
+    if (!isMyTurn) return;
     dispatch({ type: 'APPLY_CHANCE_CARD' });
   };
 
@@ -128,8 +137,9 @@ const ChanceModal: React.FC = () => {
         <h2 className={styles.title}>황금 열쇠</h2>
         
         <div 
-          className={`${styles.cardContainer} ${flipped ? styles.flipped : ''}`}
+          className={`${styles.cardContainer} ${isFlipped ? styles.flipped : ''}`}
           onClick={handleCardClick}
+          style={{ cursor: isMyTurn && !isFlipped ? 'pointer' : 'default' }}
         >
           <div className={styles.cardInner}>
             {/* Card Back */}
@@ -147,10 +157,22 @@ const ChanceModal: React.FC = () => {
           </div>
         </div>
 
-        {flipped && card && (
-          <button className={styles.btn} onClick={handleConfirm}>
-            확인
-          </button>
+        {isFlipped && card ? (
+          isMyTurn ? (
+            <button className={styles.btn} onClick={handleConfirm}>
+              확인
+            </button>
+          ) : (
+            <div style={{ color: '#6b7280', marginTop: '20px', fontWeight: 'bold' }}>
+              {currentPlayer.name}님이 황금 열쇠 내용을 확인 중입니다...
+            </div>
+          )
+        ) : (
+          !isMyTurn && (
+            <div style={{ color: '#6b7280', marginTop: '20px', fontWeight: 'bold' }}>
+              {currentPlayer.name}님이 황금 열쇠를 뽑고 있습니다...
+            </div>
+          )
         )}
       </div>
     </div>
