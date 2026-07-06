@@ -653,14 +653,37 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
 
     case 'DECLARE_BANKRUPTCY': {
       const currentPlayer = state.players[state.currentPlayerIndex];
-      const updatedPlayers = state.players.map(p => 
-        p.id === currentPlayer.id ? { ...p, isActive: false, cash: 0, loanAmount: 0 } : p
-      );
+      const creditorId = state.pendingPayment?.to;
+      const isOwedToPlayer = creditorId && creditorId !== 'bank';
       
-      // All properties belong to bank now (or transferred if we implement it, but rule says 파산)
-      const newBoard = state.board.map(t => 
-        t.ownerId === currentPlayer.id ? { ...t, ownerId: null, villas: 0, buildings: 0, hotels: 0 } : t
-      );
+      const updatedPlayers = state.players.map(p => {
+        if (p.id === currentPlayer.id) {
+          return { ...p, isActive: false, cash: 0, loanAmount: 0 };
+        }
+        if (isOwedToPlayer && p.id === creditorId) {
+          // 파산한 플레이어의 남은 현금을 받을 사람에게 양도
+          return { ...p, cash: p.cash + currentPlayer.cash };
+        }
+        return p;
+      });
+      
+      const newBoard = state.board.map(t => {
+        if (t.ownerId === currentPlayer.id) {
+          if (isOwedToPlayer) {
+            // 땅과 건물 그대로 받을 사람에게 양도
+            return { ...t, ownerId: creditorId as number };
+          } else {
+            // 은행 파산 시 모두 초기화
+            return { ...t, ownerId: null, villas: 0, buildings: 0, hotels: 0 };
+          }
+        }
+        return t;
+      });
+
+      const creditorName = state.players.find(p => p.id === creditorId)?.name;
+      const messageLogAdd = isOwedToPlayer
+        ? `🚨 ${currentPlayer.name}님이 파산하여 남은 자금과 모든 자산이 ${creditorName}님에게 양도됩니다!`
+        : `🚨 ${currentPlayer.name}님이 은행에 파산했습니다! 모든 자산이 몰수되어 초기화됩니다.`;
 
       return {
         ...state,
@@ -668,7 +691,7 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
         board: newBoard,
         turnPhase: 'action',
         pendingPayment: null,
-        messageLog: [...state.messageLog, `🚨 ${currentPlayer.name}님이 파산했습니다! 모든 자산이 초기화됩니다.`]
+        messageLog: [...state.messageLog, messageLogAdd]
       };
     }
 

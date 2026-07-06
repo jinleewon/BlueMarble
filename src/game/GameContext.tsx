@@ -5,7 +5,7 @@ import type { GameState, GameAction } from './types';
 import { INITIAL_STATE, gameReducer } from './reducer';
 
 // Connect to local server for testing. Change this to the hosted server URL in production.
-const SOCKET_URL = 'http://localhost:3001';
+const SOCKET_URL = `http://${window.location.hostname}:3001`;
 export const socket: Socket = io(SOCKET_URL);
 
 interface GameContextProps {

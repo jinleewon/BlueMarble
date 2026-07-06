@@ -53,12 +53,6 @@ const Sidebar: React.FC = () => {
     dispatch({ type: 'END_TURN' });
   };
 
-  const avatars = [
-    `${import.meta.env.BASE_URL}assets/avatar1.png`,
-    `${import.meta.env.BASE_URL}assets/avatar2.png`,
-    `${import.meta.env.BASE_URL}assets/avatar3.png`
-  ];
-
   return (
     <div className={styles.sidebar}>
       <p className={styles.title}>PLAYERS</p>
