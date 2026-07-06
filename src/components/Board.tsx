@@ -91,7 +91,9 @@ const Board: React.FC = () => {
   };
 
   const currentPlayer = state.players[state.currentPlayerIndex];
-  const isSpaceTravelMode = state.turnPhase === 'pre_roll' && currentPlayer?.isSpaceTravel;
+  const myPlayerId = Number(localStorage.getItem('myPlayerId'));
+  const isMyTurn = currentPlayer?.id === myPlayerId;
+  const isSpaceTravelMode = state.turnPhase === 'pre_roll' && currentPlayer?.isSpaceTravel && isMyTurn;
 
   const getTileColor = (id: number) => {
     if ([1, 2, 3, 4, 11, 12, 13, 14].includes(id)) return '#facc15'; // Yellow

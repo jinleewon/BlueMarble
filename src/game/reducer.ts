@@ -209,6 +209,11 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
       const { targetTileId } = action.payload;
       const currentPlayer = state.players[state.currentPlayerIndex];
       
+      if (state.turnPhase !== 'pre_roll' || !currentPlayer.isSpaceTravel) {
+        return state;
+      }
+
+      
       let passedStart = false;
       if (targetTileId < currentPlayer.position && targetTileId !== 30) {
         // passedStart is only true if moving forward past start. Space travel allows moving anywhere. 
