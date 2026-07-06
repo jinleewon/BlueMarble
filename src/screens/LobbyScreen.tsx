@@ -55,10 +55,13 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
   const handleJoinSubmit = () => {
     if (code.length === 6) {
       const activeRoom = localStorage.getItem('blueMarbleRoomCode');
+      // 백엔드가 없으므로 현재 로컬 스토리지에 저장된 코드거나, 테스트용 코드만 허용합니다.
+      // 다른 기기 접속 테스트를 위해 모든 6자리 코드를 임시 허용하려면 아래 조건을 주석 처리하고 바로 통과시키면 됩니다.
       if (code === activeRoom || code === '123456') {
+        setRoomCode(code); // 입장한 코드로 방 코드 설정 (새로 생성 방지)
         setMode('CREATE');
       } else {
-        alert("존재하지 않는 방 코드입니다. 올바른 코드를 입력해주세요.");
+        alert("존재하지 않는 방 코드입니다.\n(안내: 현재 서버가 없어 다른 기기/브라우저에서 만든 방은 찾을 수 없습니다.)");
       }
     } else {
       alert("6자리 코드를 모두 입력해주세요.");
