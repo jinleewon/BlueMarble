@@ -43,7 +43,7 @@ export interface Tile {
   hotels?: number;
 }
 
-export type TurnPhase = 'pre_roll' | 'roll' | 'move' | 'action' | 'chance_card' | 'insolvent' | 'idle' | 'island_fail' | 'property_deed_result';
+export type TurnPhase = 'pre_roll' | 'roll' | 'move' | 'action' | 'chance_card' | 'insolvent' | 'idle' | 'island_fail' | 'property_deed_result' | 'game_over';
 
 export interface ChanceCard {
   id: string;

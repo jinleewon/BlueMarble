@@ -1,0 +1,201 @@
+.gameOverContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #61A34A;
+  overflow: hidden;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  z-index: 100;
+}
+
+.bgDecoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 100px 100px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contentWrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.title {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+
+.winnerCard {
+  background: linear-gradient(180deg, #3A73D8 0%, #2A59B0 100%);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 320px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+}
+
+.trophyIcon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 24px;
+}
+
+.avatarContainer {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid white;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  background-color: #2D3748;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.winnerName {
+  color: white;
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.winnerBadge {
+  background-color: #FACC15;
+  color: #1E3A8A;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.assetsLabel {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.assetsAmount {
+  color: white;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.playerList {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.playerRow {
+  background-color: white;
+  border-radius: 16px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.rankNumber {
+  color: #3A73D8;
+  font-size: 20px;
+  font-weight: 800;
+  width: 30px;
+}
+
+.rowAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #E5E7EB;
+  margin-right: 12px;
+  overflow: hidden;
+  background-color: #2D3748;
+}
+
+.rowAvatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rowName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+  flex: 1;
+}
+
+.rowAssetsInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.rowAssetsLabel {
+  font-size: 11px;
+  color: #6B7280;
+  margin-bottom: 2px;
+}
+
+.rowAssetsAmount {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1E3A8A;
+}
+
+.bankruptAmount {
+  color: #EF4444;
+}
+
+.returnButton {
+  margin-top: 40px;
+  padding: 12px 32px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid white;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.returnButton:hover {
+  background-color: white;
+  color: #61A34A;
+}

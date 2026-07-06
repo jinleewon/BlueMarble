@@ -7,6 +7,7 @@ import ActionModal from './components/ActionModal';
 import ChanceModal from './components/ChanceModal';
 import InsolventModal from './components/InsolventModal';
 import DeedResultModal from './components/DeedResultModal';
+import GameOverScreen from './components/GameOverScreen';
 import HomeScreen from './screens/HomeScreen';
 import LobbyScreen from './screens/LobbyScreen';
 import RulesScreen from './screens/RulesScreen';
@@ -79,10 +80,16 @@ const MainApp: React.FC = () => {
 
   return (
     <>
-      {currentScreen === 'HOME' && <HomeScreen onStart={() => setCurrentScreen('LOBBY')} onRules={() => setCurrentScreen('RULES')} />}
-      {currentScreen === 'RULES' && <RulesScreen onBack={() => setCurrentScreen('HOME')} />}
-      {currentScreen === 'LOBBY' && <LobbyScreen onBack={() => setCurrentScreen('HOME')} onPlay={() => setCurrentScreen('GAME')} />}
-      {currentScreen === 'GAME' && renderGame()}
+      {state.turnPhase === 'game_over' ? (
+        <GameOverScreen />
+      ) : (
+        <>
+          {currentScreen === 'HOME' && <HomeScreen onStart={() => setCurrentScreen('LOBBY')} onRules={() => setCurrentScreen('RULES')} />}
+          {currentScreen === 'RULES' && <RulesScreen onBack={() => setCurrentScreen('HOME')} />}
+          {currentScreen === 'LOBBY' && <LobbyScreen onBack={() => setCurrentScreen('HOME')} onPlay={() => setCurrentScreen('GAME')} />}
+          {currentScreen === 'GAME' && renderGame()}
+        </>
+      )}
     </>
   );
 };

@@ -718,7 +718,7 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
         ...state,
         players: updatedPlayers,
         board: newBoard,
-        turnPhase: 'action',
+        turnPhase: 'game_over',
         pendingPayment: null,
         messageLog: [...state.messageLog, messageLogAdd]
       };
