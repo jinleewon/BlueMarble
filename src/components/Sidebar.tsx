@@ -55,9 +55,26 @@ const Sidebar: React.FC = () => {
     dispatch({ type: 'END_TURN' });
   };
 
+  const handleEndGame = () => {
+    if (confirm('게임을 종료하시겠습니까? 방으로 돌아갑니다.')) {
+      window.location.reload();
+    }
+  };
+
+  const myPlayerId = Number(localStorage.getItem('myPlayerId'));
+  const isMyTurn = state.players[state.currentPlayerIndex]?.id === myPlayerId;
+
   return (
     <div className={styles.sidebar}>
-      <p className={styles.title}>PLAYERS</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <p className={styles.title} style={{ margin: 0 }}>PLAYERS</p>
+        <button 
+          onClick={handleEndGame}
+          style={{ backgroundColor: '#EF4444', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
+        >
+          게임 종료
+        </button>
+      </div>
       
       {state.players.map((player, index) => {
         const isActive = state.currentPlayerIndex === index;
@@ -146,68 +163,74 @@ const Sidebar: React.FC = () => {
               보드판에서 이동할 땅을 클릭하세요!
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button 
-                  className={styles.btn} 
-                  style={{ flex: 1, backgroundColor: '#3B82F6' }}
-                  onClick={() => setShowManagementModal(true)}
-                >
-                  자산 관리
-                </button>
-                {state.players[state.currentPlayerIndex].loanAmount > 0 ? (
-                  <button 
-                    className={styles.btn} 
-                    style={{ flex: 1, backgroundColor: '#10B981', display: 'flex', flexDirection: 'column', gap: '2px', padding: '4px' }}
-                    onClick={() => dispatch({ type: 'REPAY_LOAN' })}
-                  >
-                    <span>대출 상환</span>
-                    <span style={{ fontSize: '11px', opacity: 0.9 }}>
-                      (남은 턴: {state.players[state.currentPlayerIndex].loanTurnsLeft})
-                    </span>
-                  </button>
-                ) : (
-                  <button 
-                    className={styles.btn} 
-                    style={{ flex: 1, backgroundColor: '#F59E0B' }}
-                    onClick={() => dispatch({ type: 'TAKE_LOAN' })}
-                  >
-                    대출 받기
-                  </button>
-                )}
-              </div>
+            isMyTurn ? (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {state.players[state.currentPlayerIndex].islandTurnsLeft > 0 && (
-                  <div style={{
-                    backgroundColor: '#FEF2F2',
-                    color: '#DC2626',
-                    padding: '8px',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    border: '1px solid #FCA5A5'
-                  }}>
-                    🏝️ 무인도에 갇혔습니다!<br />
-                    주사위 더블이 나오면 탈출합니다.<br />
-                    (남은 턴: {state.players[state.currentPlayerIndex].islandTurnsLeft})
-                  </div>
-                )}
-                {state.players[state.currentPlayerIndex].hasEscapeCard && state.players[state.currentPlayerIndex].islandTurnsLeft > 0 ? (
+                <div style={{ display: 'flex', gap: '8px' }}>
                   <button 
                     className={styles.btn} 
-                    style={{ backgroundColor: '#10B981' }}
-                    onClick={() => dispatch({ type: 'USE_ESCAPE_CARD' })}
+                    style={{ flex: 1, backgroundColor: '#3B82F6' }}
+                    onClick={() => setShowManagementModal(true)}
                   >
-                    무인도 탈출권 사용
+                    자산 관리
                   </button>
-                ) : (
-                  <button className={styles.btn} onClick={handleRollDice}>
-                    주사위 굴리기
-                  </button>
-                )}
+                  {state.players[state.currentPlayerIndex].loanAmount > 0 ? (
+                    <button 
+                      className={styles.btn} 
+                      style={{ flex: 1, backgroundColor: '#10B981', display: 'flex', flexDirection: 'column', gap: '2px', padding: '4px' }}
+                      onClick={() => dispatch({ type: 'REPAY_LOAN' })}
+                    >
+                      <span>대출 상환</span>
+                      <span style={{ fontSize: '11px', opacity: 0.9 }}>
+                        (남은 턴: {state.players[state.currentPlayerIndex].loanTurnsLeft})
+                      </span>
+                    </button>
+                  ) : (
+                    <button 
+                      className={styles.btn} 
+                      style={{ flex: 1, backgroundColor: '#F59E0B' }}
+                      onClick={() => dispatch({ type: 'TAKE_LOAN' })}
+                    >
+                      대출 받기
+                    </button>
+                  )}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {state.players[state.currentPlayerIndex].islandTurnsLeft > 0 && (
+                    <div style={{
+                      backgroundColor: '#FEF2F2',
+                      color: '#DC2626',
+                      padding: '8px',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      border: '1px solid #FCA5A5'
+                    }}>
+                      🏝️ 무인도에 갇혔습니다!<br />
+                      주사위 더블이 나오면 탈출합니다.<br />
+                      (남은 턴: {state.players[state.currentPlayerIndex].islandTurnsLeft})
+                    </div>
+                  )}
+                  {state.players[state.currentPlayerIndex].hasEscapeCard && state.players[state.currentPlayerIndex].islandTurnsLeft > 0 ? (
+                    <button 
+                      className={styles.btn} 
+                      style={{ backgroundColor: '#10B981' }}
+                      onClick={() => dispatch({ type: 'USE_ESCAPE_CARD' })}
+                    >
+                      무인도 탈출권 사용
+                    </button>
+                  ) : (
+                    <button className={styles.btn} onClick={handleRollDice}>
+                      주사위 굴리기
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className={styles.btn} style={{ backgroundColor: '#6B7280', color: 'white', textAlign: 'center', lineHeight: '48px', fontWeight: 'bold' }}>
+                {state.players[state.currentPlayerIndex].name}님의 턴을 기다리는 중...
+              </div>
+            )
           )
         )}
         
