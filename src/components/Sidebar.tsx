@@ -66,12 +66,35 @@ const Sidebar: React.FC = () => {
       {state.players.map((player, index) => {
         const isActive = state.currentPlayerIndex === index;
         const ownedProperties = state.board.filter(t => t.ownerId === player.id);
-        const avatarSrc = avatars[index % avatars.length];
+
+        const TokenIcon = () => {
+          switch(player.tokenId) {
+            case 'rocket': return '🚀';
+            case 'sailboat': return '⛵';
+            case 'car': return '🚗';
+            case 'plane': return '✈️';
+            case 'train': return '🚂';
+            case 'balloon': return '🎈';
+            default: return index === 0 ? '👑' : '👤';
+          }
+        };
 
         return (
           <div key={player.id} className={`${styles.playerCard} ${isActive ? styles.active : ''}`}>
             <div className={styles.cardHeader}>
-              <img src={avatarSrc} alt="Avatar" className={styles.avatar} />
+              <div 
+                className={styles.avatar} 
+                style={{ 
+                  backgroundColor: player.tokenId ? '#dbeafe' : player.color, 
+                  color: player.tokenId ? '#111827' : 'white',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  fontSize: '24px'
+                }}
+              >
+                <TokenIcon />
+              </div>
               <div className={styles.info}>
                 <div className={styles.name}>{player.name}</div>
                 <AnimatedCash cash={player.cash} />

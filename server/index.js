@@ -30,10 +30,11 @@ io.on('connection', (socket) => {
     if (room) {
       socket.join(roomCode);
       room.clients.push(socket.id);
-      console.log(`User ${socket.id} joined room ${roomCode}`);
+      const assignedId = room.clients.length;
+      console.log(`User ${socket.id} joined room ${roomCode} as Player ${assignedId}`);
       // Request full state sync from the host
       io.to(room.host).emit('request_state_sync');
-      if (typeof callback === 'function') callback({ success: true });
+      if (typeof callback === 'function') callback({ success: true, playerId: assignedId });
     } else {
       console.log(`User ${socket.id} tried to join non-existent room ${roomCode}`);
       if (typeof callback === 'function') callback({ success: false, message: 'Room not found' });

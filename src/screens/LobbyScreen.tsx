@@ -29,6 +29,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
       }
       setRoomCode(result);
       localStorage.setItem('blueMarbleRoomCode', result);
+      localStorage.setItem('myPlayerId', '1'); // Host is always Player 1
       socket.emit('create_room', result);
     }
   }, [mode, roomCode]);
@@ -59,6 +60,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
         if (response.success) {
           setRoomCode(code);
           localStorage.setItem('blueMarbleRoomCode', code);
+          localStorage.setItem('myPlayerId', String(response.playerId)); // Save assigned player ID
           // 방장은 새로운 플레이어가 들어오면 자동으로 ADD_PLAYER를 실행하고 동기화해 줍니다.
           setMode('CREATE');
         } else {
@@ -179,8 +181,15 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
                 <div 
                   key={p.id} 
                   className={`${styles.playerSlot} ${idx === 0 ? styles.host : ''}`}
-                  onClick={() => setSelectingTokenForPlayerId(p.id)}
-                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const myId = Number(localStorage.getItem('myPlayerId'));
+                    if (p.id === myId) {
+                      setSelectingTokenForPlayerId(p.id);
+                    } else {
+                      alert('자신의 말만 선택할 수 있습니다.');
+                    }
+                  }}
+                  style={{ cursor: p.id === Number(localStorage.getItem('myPlayerId')) ? 'pointer' : 'default' }}
                 >
                   <div className={styles.slotAvatar} style={{ backgroundColor: p.tokenId ? '#dbeafe' : p.color, color: p.tokenId ? '#111827' : 'white' }}>
                     <TokenIcon />

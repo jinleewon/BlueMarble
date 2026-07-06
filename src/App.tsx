@@ -18,6 +18,13 @@ const MainApp: React.FC = () => {
   const [currentScreen, setCurrentScreen] = useState<AppScreen>('HOME');
   const { state, dispatch } = useGame();
 
+  // Watch for game start (by host) to navigate guests automatically
+  useEffect(() => {
+    if (state.turnPhase !== 'idle' && currentScreen === 'LOBBY') {
+      setCurrentScreen('GAME');
+    }
+  }, [state.turnPhase, currentScreen]);
+
   // Watch for dice roll and trigger move after delay
   useEffect(() => {
     if (state.turnPhase === 'move' && state.diceResult) {
