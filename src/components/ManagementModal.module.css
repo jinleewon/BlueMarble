@@ -1,0 +1,339 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(30, 41, 59, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+}
+
+.modal {
+  background-color: #FFFFFF;
+  border-radius: 32px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.briefcaseIcon {
+  width: 40px;
+  height: 40px;
+  background-color: #3B82F6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1E293B;
+  margin: 0;
+}
+
+.closeBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #F1F5F9;
+  border: none;
+  font-size: 20px;
+  color: #64748B;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.closeBtn:hover {
+  background-color: #E2E8F0;
+  color: #1E293B;
+}
+
+/* Summary Box */
+.summaryBox {
+  background-color: #F8FAFC;
+  border-radius: 24px;
+  padding: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.summaryItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.summaryDivider {
+  width: 1px;
+  height: 40px;
+  background-color: #E2E8F0;
+}
+
+.summaryLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748B;
+  margin-bottom: 8px;
+}
+
+.summaryValue {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.cashColor { color: #3B82F6; }
+.propertyColor { color: #A855F7; }
+.totalColor { color: #10B981; }
+
+/* Current Cash Row */
+.cashRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 0 8px;
+}
+
+.cashRowLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1E293B;
+}
+
+.cashRowIcon {
+  color: #3B82F6;
+  font-size: 20px;
+}
+
+.cashRowAmount {
+  font-size: 20px;
+  font-weight: 800;
+  color: #3B82F6;
+}
+
+.separator {
+  height: 1px;
+  background-color: #F1F5F9;
+  margin-bottom: 32px;
+}
+
+/* Property Section */
+.propertySection {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+  padding-right: 8px;
+}
+
+/* Custom Scrollbar for Property Section */
+.propertySection::-webkit-scrollbar {
+  width: 6px;
+}
+.propertySection::-webkit-scrollbar-track {
+  background: #F1F5F9; 
+  border-radius: 4px;
+}
+.propertySection::-webkit-scrollbar-thumb {
+  background: #CBD5E1; 
+  border-radius: 4px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #64748B;
+  margin-bottom: 16px;
+}
+
+.propertyList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.propertyCard {
+  background-color: #FFFFFF;
+  border: 1px solid #F1F5F9;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.cityColorIndicator {
+  width: 12px;
+  height: 60px;
+  border-radius: 6px;
+  margin-right: 16px;
+}
+
+.propertyInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cityName {
+  font-size: 18px;
+  font-weight: 800;
+  color: #1E293B;
+  margin-bottom: 4px;
+}
+
+.propertyDetails {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #94A3B8;
+  gap: 8px;
+}
+
+.detailDivider {
+  width: 1px;
+  height: 12px;
+  background-color: #CBD5E1;
+}
+
+.propertyValue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 20px;
+}
+
+.valueLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+  margin-bottom: 2px;
+}
+
+.valueAmount {
+  font-size: 18px;
+  font-weight: 800;
+  color: #10B981;
+}
+
+.sellBtn {
+  background-color: #EF4444;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sellBtn:hover {
+  background-color: #DC2626;
+  transform: translateY(-1px);
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 40px 0;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+/* Footer */
+.footer {
+  margin-top: 32px;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 16px;
+}
+
+.loanBtn, .confirmBtn {
+  flex: 1;
+  padding: 16px;
+  border: none;
+  border-radius: 32px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.loanBtn {
+  background-color: #3B82F6;
+  color: white;
+}
+
+.loanBtn:hover:not(:disabled) {
+  background-color: #2563EB;
+}
+
+.loanBtn:disabled {
+  background-color: #94A3B8;
+  cursor: not-allowed;
+}
+
+.confirmBtn {
+  background-color: #FACC15;
+  color: #1E293B;
+}
+
+.confirmBtn:hover {
+  background-color: #EAB308;
+}
+
+.hintText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #64748B;
+}
+
+.infoIcon {
+  font-size: 14px;
+}
