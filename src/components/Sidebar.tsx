@@ -46,7 +46,9 @@ const Sidebar: React.FC = () => {
   }, [state.messageLog]);
 
   const handleRollDice = () => {
-    dispatch({ type: 'ROLL_DICE' });
+    const d1 = Math.floor(Math.random() * 6) + 1;
+    const d2 = Math.floor(Math.random() * 6) + 1;
+    dispatch({ type: 'ROLL_DICE', payload: { d1, d2 } });
   };
 
   const handleEndTurn = () => {

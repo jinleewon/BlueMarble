@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useGame } from '../game/GameContext';
 import styles from './ChanceModal.module.css';
 import type { ChanceCard } from '../game/types';
+import { shuffle } from '../game/reducer';
+import { CHANCE_CARDS } from '../game/cards';
 
 const IncomeCardContent: React.FC<{ card: ChanceCard }> = ({ card }) => {
   const parts = card.description.split('\n');
@@ -114,7 +116,11 @@ const ChanceModal: React.FC = () => {
   const handleCardClick = () => {
     if (!isMyTurn) return;
     if (!isFlipped) {
-      dispatch({ type: 'DRAW_CHANCE_CARD' });
+      if (state.chanceDeck.length === 0) {
+        dispatch({ type: 'DRAW_CHANCE_CARD', payload: { shuffledDeck: shuffle([...CHANCE_CARDS]) } });
+      } else {
+        dispatch({ type: 'DRAW_CHANCE_CARD' });
+      }
       setLocalFlipped(true);
     }
   };

@@ -70,7 +70,8 @@ export interface GameState {
 }
 
 export type GameAction =
-  | { type: 'ROLL_DICE' }
+  | { type: 'SYNC_STATE'; payload: GameState }
+  | { type: 'ROLL_DICE'; payload: { d1: number; d2: number } }
   | { type: 'MOVE_PLAYER'; payload: { steps: number } }
   | { type: 'SPACE_TRAVEL_MOVE'; payload: { targetTileId: number } }
   | { type: 'BUY_PROPERTY'; payload: { tileId: number; buyLand: boolean; buyVilla: boolean; buyBuilding: boolean; buyHotel: boolean; cost: number } }
@@ -78,7 +79,7 @@ export type GameAction =
   | { type: 'PAY_TOLL'; payload: { tileId: number; amount: number; ownerId: number } }
   | { type: 'FUND_DONATE'; payload: { amount: number } }
   | { type: 'FUND_RECEIVE' }
-  | { type: 'DRAW_CHANCE_CARD' }
+  | { type: 'DRAW_CHANCE_CARD'; payload?: { shuffledDeck: ChanceCard[] } }
   | { type: 'APPLY_CHANCE_CARD' }
   | { type: 'END_TURN' }
   | { type: 'START_GAME' }

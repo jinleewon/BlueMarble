@@ -2,7 +2,7 @@ import type { GameState, GameAction } from './types';
 import { INITIAL_BOARD } from './board';
 import { CHANCE_CARDS } from './cards';
 
-const shuffle = <T>(array: T[]): T[] => {
+export const shuffle = <T>(array: T[]): T[] => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -47,6 +47,10 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
       };
     }
 
+    case 'SYNC_STATE': {
+      return action.payload;
+    }
+
     case 'ROLL_DICE': {
       const currentPlayer = state.players[state.currentPlayerIndex];
       
@@ -55,8 +59,8 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
         return state;
       }
 
-      const d1 = Math.floor(Math.random() * 6) + 1;
-      const d2 = Math.floor(Math.random() * 6) + 1;
+      const d1 = action.payload.d1;
+      const d2 = action.payload.d2;
       const isDouble = d1 === d2;
 
       // Handle Island escape attempt
@@ -362,16 +366,19 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
     }
 
     case 'DRAW_CHANCE_CARD': {
-      if (state.chanceDeck.length === 0) {
-        // Reshuffle if deck is empty
-        return {
-          ...state,
-          chanceDeck: shuffle(CHANCE_CARDS),
-          messageLog: [...state.messageLog, '황금열쇠 카드를 섞습니다.']
-        }; // Let the user click draw again
+      let currentDeck = state.chanceDeck;
+
+      if (currentDeck.length === 0) {
+        // Use the reshuffled deck provided by the client who dispatched the action
+        if (action.payload?.shuffledDeck) {
+          currentDeck = action.payload.shuffledDeck;
+        } else {
+          // Fallback, though this will cause desync if multiple clients hit it
+          currentDeck = shuffle(CHANCE_CARDS);
+        }
       }
       
-      const newDeck = [...state.chanceDeck];
+      const newDeck = [...currentDeck];
       const drawnCard = newDeck.pop();
       
       if (!drawnCard) return state;
@@ -380,7 +387,7 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
         ...state,
         chanceDeck: newDeck,
         activeChanceCard: drawnCard,
-        messageLog: [...state.messageLog, `황금열쇠: [${drawnCard.title}]`]
+        messageLog: [...state.messageLog, currentDeck.length === CHANCE_CARDS.length ? `황금열쇠: [${drawnCard.title}] (덱 초기화됨)` : `황금열쇠: [${drawnCard.title}]`]
       };
     }
 
