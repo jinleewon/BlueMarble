@@ -47,10 +47,6 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
       };
     }
 
-    case 'SYNC_STATE': {
-      return action.payload;
-    }
-
     case 'ROLL_DICE': {
       const currentPlayer = state.players[state.currentPlayerIndex];
       
@@ -581,8 +577,20 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
     }
 
     case 'END_TURN': {
+      // 턴 종료 요청이 유효한 타이밍인지 확인 (더블클릭 방지)
+      if (state.turnPhase === 'pre_roll' || state.turnPhase === 'move' || state.turnPhase === 'idle' || state.turnPhase === 'roll') {
+        return state;
+      }
+
+      const currentPlayerState = state.players[state.currentPlayerIndex];
       const isDouble = state.diceResult && state.diceResult[0] === state.diceResult[1];
-      const hasAnotherTurn = isDouble && state.doubleCount > 0 && state.doubleCount < 3;
+      
+      // 무인도에 갇혔거나 우주여행을 떠나는 경우, 더블이라도 한 번 더 던지지 않음
+      const hasAnotherTurn = isDouble && 
+                             state.doubleCount > 0 && 
+                             state.doubleCount < 3 && 
+                             currentPlayerState.islandTurnsLeft === 0 && 
+                             !currentPlayerState.isSpaceTravel;
       
       let nextPlayerIndex = state.currentPlayerIndex;
       let message = `${state.players[state.currentPlayerIndex].name}님의 턴 종료.`;
