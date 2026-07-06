@@ -211,17 +211,6 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
           </div>
 
           <div className={styles.actions}>
-            {state.players.length < 4 && (
-              <button 
-                className={styles.btn} 
-                onClick={() => dispatch({ 
-                  type: 'ADD_PLAYER', 
-                  payload: { name: `Player ${state.players.length + 1}`, color: ['#3B82F6', '#10B981', '#F59E0B'][state.players.length - 1] }
-                })}
-              >
-                테스트: P{state.players.length + 1} 추가
-              </button>
-            )}
             <button className={styles.btn} onClick={() => setMode('SELECT')}>나가기</button>
             <button 
               className={`${styles.btn} ${state.players.length >= 2 && state.players.every(p => p.tokenId) ? styles.btnPrimary : ''}`} 
