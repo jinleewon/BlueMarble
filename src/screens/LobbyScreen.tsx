@@ -28,6 +28,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
         result += chars.charAt(Math.floor(Math.random() * chars.length));
       }
       setRoomCode(result);
+      localStorage.setItem('blueMarbleRoomCode', result);
     }
   }, [mode, roomCode]);
 
@@ -53,8 +54,12 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
 
   const handleJoinSubmit = () => {
     if (code.length === 6) {
-      // Simulate successful join by transitioning to the lobby
-      setMode('CREATE');
+      const activeRoom = localStorage.getItem('blueMarbleRoomCode');
+      if (code === activeRoom || code === '123456') {
+        setMode('CREATE');
+      } else {
+        alert("존재하지 않는 방 코드입니다. 올바른 코드를 입력해주세요.");
+      }
     } else {
       alert("6자리 코드를 모두 입력해주세요.");
     }
@@ -88,6 +93,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
 
       {mode === 'JOIN' && (
         <div className={styles.roomLayout}>
+          <button className={styles.closeBtn} onClick={onBack}>✕</button>
           <div className={styles.roomHeader}>
             <div className={styles.headerIcon}>🔑</div>
             <div className={styles.roomTitle}>참여하기</div>
@@ -134,9 +140,10 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
 
       {mode === 'CREATE' && (
         <div className={styles.roomLayout}>
+          <button className={styles.closeBtn} onClick={onBack}>✕</button>
           <div className={styles.roomHeader}>
-            <div className={styles.roomTitle}>방 만들기</div>
-            <div className={styles.roomSubtitle}>Create Game Lobby</div>
+            <div className={styles.roomTitle}>대기실</div>
+            <div className={styles.roomSubtitle}>Game Lobby</div>
           </div>
 
           <div className={styles.codeSection}>

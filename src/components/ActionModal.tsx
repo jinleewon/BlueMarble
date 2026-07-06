@@ -183,7 +183,9 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
 
     const handlePayToll = () => {
       dispatch({ type: 'PAY_TOLL', payload: { tileId, amount: tollAmount, ownerId: tile.ownerId! } });
-      handleEndTurn();
+      if (currentPlayer.cash >= tollAmount) {
+        handleEndTurn();
+      }
     };
 
     const handleUseExemption = () => {
@@ -216,8 +218,8 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
                 우대권 사용
               </button>
             )}
-            <button className={`${styles.btn} ${styles.btnPay}`} onClick={handlePayToll} disabled={currentPlayer.cash < tollAmount}>
-              지불하기
+            <button className={`${styles.btn} ${styles.btnPay}`} onClick={handlePayToll}>
+              {currentPlayer.cash < tollAmount ? '파산/매각/대출 진행' : '지불하기'}
             </button>
           </div>
         </div>

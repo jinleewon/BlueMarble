@@ -13,11 +13,15 @@ const InsolventModal: React.FC = () => {
 
   const handlePay = () => {
     dispatch({ type: 'PAY_PENDING' });
+    if (reason === '통행료') {
+      dispatch({ type: 'END_TURN' });
+    }
   };
 
   const handleBankruptcy = () => {
-    if (confirm('정말 파산하시겠습니까? 모든 자산이 몰수되고 패배하게 됩니다.')) {
+    if (window.confirm('정말 파산하시겠습니까? 모든 자산이 몰수되고 패배하게 됩니다.')) {
       dispatch({ type: 'DECLARE_BANKRUPTCY' });
+      dispatch({ type: 'END_TURN' });
     }
   };
 

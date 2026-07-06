@@ -578,6 +578,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
       if (!hasAnotherTurn) {
         nextPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+        while (!state.players[nextPlayerIndex].isActive) {
+          nextPlayerIndex = (nextPlayerIndex + 1) % state.players.length;
+          if (nextPlayerIndex === state.currentPlayerIndex) break;
+        }
         message = `다음 차례: ${state.players[nextPlayerIndex].name}님`;
         msgs = [message];
 
