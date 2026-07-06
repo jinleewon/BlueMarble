@@ -57,7 +57,8 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
       const activeRoom = localStorage.getItem('blueMarbleRoomCode');
       // 백엔드가 없으므로 현재 로컬 스토리지에 저장된 코드거나, 테스트용 코드만 허용합니다.
       // 다른 기기 접속 테스트를 위해 모든 6자리 코드를 임시 허용하려면 아래 조건을 주석 처리하고 바로 통과시키면 됩니다.
-      if (code === activeRoom || code === '123456') {
+      // 임시 수정: 서로 다른 브라우저/기기에서도 UI 테스트가 가능하도록 6자리 코드면 모두 허용합니다.
+      if (code.length === 6) {
         setRoomCode(code); // 입장한 코드로 방 코드 설정 (새로 생성 방지)
         setMode('CREATE');
       } else {
