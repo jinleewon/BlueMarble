@@ -25,8 +25,11 @@ export const INITIAL_STATE: GameState = {
   messageLog: ['게임을 시작합니다!']
 };
 
-export function gameReducer(state: GameState, action: GameAction): GameState {
+export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC_STATE', payload: GameState }): GameState {
   switch (action.type) {
+    case 'SYNC_STATE':
+      return action.payload;
+
     case 'START_GAME': {
       const isTwoPlayers = state.players.length === 2;
       const initialCash = isTwoPlayers ? 6800000 : 3400000;

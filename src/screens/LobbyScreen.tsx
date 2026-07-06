@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './LobbyScreen.module.css';
-import { useGame } from '../game/GameContext';
+import { useGame, socket } from '../game/GameContext';
 import SelectionModal from './SelectionModal';
 
 interface LobbyScreenProps {
@@ -29,6 +29,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
       }
       setRoomCode(result);
       localStorage.setItem('blueMarbleRoomCode', result);
+      socket.emit('create_room', result);
     }
   }, [mode, roomCode]);
 
@@ -54,16 +55,20 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
 
   const handleJoinSubmit = () => {
     if (code.length === 6) {
-      const activeRoom = localStorage.getItem('blueMarbleRoomCode');
-      // 백엔드가 없으므로 현재 로컬 스토리지에 저장된 코드거나, 테스트용 코드만 허용합니다.
-      // 다른 기기 접속 테스트를 위해 모든 6자리 코드를 임시 허용하려면 아래 조건을 주석 처리하고 바로 통과시키면 됩니다.
-      // 임시 수정: 서로 다른 브라우저/기기에서도 UI 테스트가 가능하도록 6자리 코드면 모두 허용합니다.
-      if (code.length === 6) {
-        setRoomCode(code); // 입장한 코드로 방 코드 설정 (새로 생성 방지)
-        setMode('CREATE');
-      } else {
-        alert("존재하지 않는 방 코드입니다.\n(안내: 현재 서버가 없어 다른 기기/브라우저에서 만든 방은 찾을 수 없습니다.)");
-      }
+      socket.emit('join_room', code, (response: any) => {
+        if (response.success) {
+          setRoomCode(code);
+          localStorage.setItem('blueMarbleRoomCode', code);
+          // When joining, dispatch an action to add ourselves to the game state
+          dispatch({ 
+            type: 'ADD_PLAYER', 
+            payload: { name: `Player ${state.players.length + 1}`, color: ['#3B82F6', '#10B981', '#F59E0B'][state.players.length - 1] }
+          });
+          setMode('CREATE');
+        } else {
+          alert(`방에 참가할 수 없습니다: ${response.message}`);
+        }
+      });
     } else {
       alert("6자리 코드를 모두 입력해주세요.");
     }
