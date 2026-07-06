@@ -59,11 +59,7 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
         if (response.success) {
           setRoomCode(code);
           localStorage.setItem('blueMarbleRoomCode', code);
-          // When joining, dispatch an action to add ourselves to the game state
-          dispatch({ 
-            type: 'ADD_PLAYER', 
-            payload: { name: `Player ${state.players.length + 1}`, color: ['#3B82F6', '#10B981', '#F59E0B'][state.players.length - 1] }
-          });
+          // 방장은 새로운 플레이어가 들어오면 자동으로 ADD_PLAYER를 실행하고 동기화해 줍니다.
           setMode('CREATE');
         } else {
           alert(`방에 참가할 수 없습니다: ${response.message}`);

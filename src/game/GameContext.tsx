@@ -37,6 +37,17 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const roomCode = localStorage.getItem('blueMarbleRoomCode');
       if (roomCode) {
         socket.emit('sync_state', { roomCode, state });
+        
+        // Host adds the new player locally, which will then broadcast ADD_PLAYER to the guest
+        if (state.players.length < 4) {
+          dispatchSync({ 
+            type: 'ADD_PLAYER', 
+            payload: { 
+              name: `Player ${state.players.length + 1}`, 
+              color: ['#3B82F6', '#10B981', '#F59E0B'][state.players.length - 1] 
+            }
+          });
+        }
       }
     };
 
