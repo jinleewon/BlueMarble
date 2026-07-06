@@ -54,9 +54,9 @@ const Sidebar: React.FC = () => {
   };
 
   const avatars = [
-    '/assets/avatar1.png',
-    '/assets/avatar2.png',
-    '/assets/avatar3.png'
+    `${import.meta.env.BASE_URL}assets/avatar1.png`,
+    `${import.meta.env.BASE_URL}assets/avatar2.png`,
+    `${import.meta.env.BASE_URL}assets/avatar3.png`
   ];
 
   return (

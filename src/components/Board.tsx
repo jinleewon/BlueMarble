@@ -121,7 +121,7 @@ const Board: React.FC = () => {
 
         {/* Center Area */}
         <div className={styles.centerArea}>
-          <img src="/assets/globe.png" alt="Globe" className={styles.globe} />
+          <img src={`${import.meta.env.BASE_URL}assets/globe.png`} alt="Globe" className={styles.globe} />
           <div className={styles.logo}>BLUE MARBLE</div>
           
           {/* Fund Balance Display */}
@@ -164,14 +164,14 @@ const Board: React.FC = () => {
               >
                 {tile.id === 0 && (
                   <>
-                    <img src="/assets/line1.svg" alt="" style={{width: '24px', height: '24px', position: 'absolute', top: 10, left: 10}}/>
+                    <img src={`${import.meta.env.BASE_URL}assets/line1.svg`} alt="" style={{width: '24px', height: '24px', position: 'absolute', top: 10, left: 10}}/>
                     <div className={styles.cornerTitle} style={{marginTop: 'auto', color: 'white', textShadow: '0px 1px 2px rgba(0,0,0,0.5)'}}>출발<br/>GO</div>
                   </>
                 )}
                 {tile.id === 10 && (
                   <>
                     <div className={styles.cornerIconWrapper} style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                      <img src="/assets/palmtree.svg" alt="Island" className={styles.cornerIcon} />
+                      <img src={`${import.meta.env.BASE_URL}assets/palmtree.svg`} alt="Island" className={styles.cornerIcon} />
                     </div>
                     <div className={styles.cornerTitle}>무인도<br/><span style={{fontSize: '7px'}}>ISLAND</span></div>
                   </>
@@ -179,7 +179,7 @@ const Board: React.FC = () => {
                 {tile.id === 20 && (
                   <>
                     <div className={styles.cornerIconWrapper} style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                      <img src="/assets/heart.svg" alt="Fund" className={styles.cornerIcon} />
+                      <img src={`${import.meta.env.BASE_URL}assets/heart.svg`} alt="Fund" className={styles.cornerIcon} />
                     </div>
                     <div className={styles.cornerTitle}>사회복지<br/>기금<br/><span style={{fontSize: '7px', background: 'rgba(255,255,255,0.2)', padding: '2px 4px', borderRadius: '4px'}}>FUND</span></div>
                   </>
@@ -187,7 +187,7 @@ const Board: React.FC = () => {
                 {tile.id === 30 && (
                   <>
                     <div className={styles.cornerIconWrapper} style={{ border: '1px solid #8b5cf6', background: 'radial-gradient(circle, rgba(139,92,246,0.5) 0%, rgba(76,29,149,0.3) 100%)' }}>
-                      <img src="/assets/rocket.svg" alt="Space" className={styles.cornerIcon} />
+                      <img src={`${import.meta.env.BASE_URL}assets/rocket.svg`} alt="Space" className={styles.cornerIcon} />
                     </div>
                     <div className={styles.cornerTitle}>우주여행<br/><span style={{fontSize: '7px', color: '#c084fc'}}>SPACE</span></div>
                   </>

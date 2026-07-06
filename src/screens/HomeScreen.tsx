@@ -12,7 +12,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStart, onRules }) => {
       <div className={styles.bgDecoration} />
       
       <div className={styles.centerArea}>
-        <img src="/assets/globe.png" alt="Globe" className={styles.globe} />
+        <img src={`${import.meta.env.BASE_URL}assets/globe.png`} alt="Globe" className={styles.globe} />
         <div className={styles.logo}>BLUE MARBLE</div>
       </div>
 

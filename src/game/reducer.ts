@@ -725,7 +725,8 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
             hasEscapeCard: false,
             isSpaceTravel: false,
             loanAmount: 0,
-            loanTurnsLeft: 0
+            loanTurnsLeft: 0,
+            hasPassedStart: false
           }
         ]
       };

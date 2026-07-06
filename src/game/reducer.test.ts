@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { gameReducer, INITIAL_STATE } from './reducer';
-import { GameState, Player, Tile } from './types';
+import type { GameState } from './types';
 
 describe('Game Reducer - Bankruptcy and Property Selling', () => {
   it('should transition to insolvent phase when cannot afford toll', () => {
