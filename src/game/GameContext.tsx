@@ -4,8 +4,10 @@ import { io, Socket } from 'socket.io-client';
 import type { GameState, GameAction } from './types';
 import { INITIAL_STATE, gameReducer } from './reducer';
 
-// Connect to local server for testing. Change this to the hosted server URL in production.
-const SOCKET_URL = `http://${window.location.hostname}:3001`;
+// Connect to local server for testing. In production (Docker), use empty string to connect to the current host, which Nginx will proxy to the backend.
+const SOCKET_URL = import.meta.env.MODE === 'production' 
+  ? '' 
+  : `http://${window.location.hostname}:3001`;
 export const socket: Socket = io(SOCKET_URL);
 
 interface GameContextProps {

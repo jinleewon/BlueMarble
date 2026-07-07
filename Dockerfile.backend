@@ -1,0 +1,15 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files (we assume server has its own or uses the root)
+# Let's check if server has package.json. If not, it uses root package.json.
+# We'll just copy everything for simplicity, or we can copy package.json and server/
+COPY package*.json ./
+RUN npm install --production
+
+COPY server/ ./server/
+
+EXPOSE 3001
+
+CMD ["node", "server/index.js"]
