@@ -746,15 +746,15 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
 
       if (sellType === 'villa' && tile.villas && tile.villas > 0) {
         sellValue = tile.villaPrice || 0;
-        newTile.villas -= 1;
+        newTile.villas = (newTile.villas || 0) - 1;
         message = `${currentPlayer.name}님이 ${tile.name}의 별장을 ${sellValue.toLocaleString()}원에 매각했습니다.`;
       } else if (sellType === 'building' && tile.buildings && tile.buildings > 0) {
         sellValue = tile.buildingPrice || 0;
-        newTile.buildings -= 1;
+        newTile.buildings = (newTile.buildings || 0) - 1;
         message = `${currentPlayer.name}님이 ${tile.name}의 빌딩을 ${sellValue.toLocaleString()}원에 매각했습니다.`;
       } else if (sellType === 'hotel' && tile.hotels && tile.hotels > 0) {
         sellValue = tile.hotelPrice || 0;
-        newTile.hotels -= 1;
+        newTile.hotels = (newTile.hotels || 0) - 1;
         message = `${currentPlayer.name}님이 ${tile.name}의 호텔을 ${sellValue.toLocaleString()}원에 매각했습니다.`;
       } else if (sellType === 'land') {
         if ((tile.villas || 0) > 0 || (tile.buildings || 0) > 0 || (tile.hotels || 0) > 0) {
