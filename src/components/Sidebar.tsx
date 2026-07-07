@@ -65,18 +65,19 @@ const Sidebar: React.FC = () => {
   const isMyTurn = state.players[state.currentPlayerIndex]?.id === myPlayerId;
 
   return (
-    <div className={styles.sidebar}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p className={styles.title} style={{ margin: 0 }}>PLAYERS</p>
-        <button 
-          onClick={handleEndGame}
-          style={{ backgroundColor: '#EF4444', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
-        >
-          게임 종료
-        </button>
-      </div>
-      
-      {state.players.map((player, index) => {
+    <>
+      <div className={styles.sidebar}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <p className={styles.title} style={{ margin: 0 }}>PLAYERS</p>
+          <button 
+            onClick={handleEndGame}
+            style={{ backgroundColor: '#EF4444', color: 'white', border: 'none', borderRadius: '4px', padding: '4px 8px', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
+          >
+            게임 종료
+          </button>
+        </div>
+        
+        {state.players.map((player, index) => {
         const isActive = state.currentPlayerIndex === index;
         const ownedProperties = state.board.filter(t => t.ownerId === player.id);
 
@@ -252,6 +253,8 @@ const Sidebar: React.FC = () => {
         )}
       </div>
 
+      </div>
+
       {showManagementModal && (
         <ManagementModal onClose={() => setShowManagementModal(false)} />
       )}
@@ -259,7 +262,7 @@ const Sidebar: React.FC = () => {
       {selectedDeedId !== null && (
         <PropertyDeedModal tileId={selectedDeedId} onClose={() => setSelectedDeedId(null)} />
       )}
-    </div>
+    </>
   );
 };
 
