@@ -414,10 +414,15 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
           msgs.push('무인도 탈출권을 획득했습니다.');
           break;
         case 'FORCE_SELL_HALF':
-          const myProps = state.board.filter(t => t.ownerId === me.id);
-          if (myProps.length > 0) {
-            const targetProp = myProps.sort((a,b) => (b.price||0) - (a.price||0))[0];
-            const sellPrice = (targetProp.price || 0) / 2;
+          const myPropsForSell = state.board.filter(t => t.ownerId === me.id && t.id !== 39);
+          if (myPropsForSell.length > 0) {
+            const targetProp = myPropsForSell.sort((a,b) => {
+              const valA = (a.price||0) + (a.villas||0)*(a.villaPrice||0) + (a.buildings||0)*(a.buildingPrice||0) + (a.hotels||0)*(a.hotelPrice||0);
+              const valB = (b.price||0) + (b.villas||0)*(b.villaPrice||0) + (b.buildings||0)*(b.buildingPrice||0) + (b.hotels||0)*(b.hotelPrice||0);
+              return valB - valA;
+            })[0];
+            const targetVal = (targetProp.price||0) + (targetProp.villas||0)*(targetProp.villaPrice||0) + (targetProp.buildings||0)*(targetProp.buildingPrice||0) + (targetProp.hotels||0)*(targetProp.hotelPrice||0);
+            const sellPrice = targetVal / 2;
             me.cash += sellPrice;
           } else {
             msgs.push(`매각할 자산이 없습니다.`);
@@ -517,9 +522,13 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
       
       let newBoard = state.board;
       if (card.action.type === 'FORCE_SELL_HALF') {
-        const myProps = state.board.filter(t => t.ownerId === me.id);
-        if (myProps.length > 0) {
-          const targetProp = myProps.sort((a,b) => (b.price||0) - (a.price||0))[0];
+        const myPropsForSell = state.board.filter(t => t.ownerId === me.id && t.id !== 39);
+        if (myPropsForSell.length > 0) {
+          const targetProp = myPropsForSell.sort((a,b) => {
+            const valA = (a.price||0) + (a.villas||0)*(a.villaPrice||0) + (a.buildings||0)*(a.buildingPrice||0) + (a.hotels||0)*(a.hotelPrice||0);
+            const valB = (b.price||0) + (b.villas||0)*(b.villaPrice||0) + (b.buildings||0)*(b.buildingPrice||0) + (b.hotels||0)*(b.hotelPrice||0);
+            return valB - valA;
+          })[0];
           newBoard = state.board.map(t => t.id === targetProp.id ? { ...t, ownerId: null, villas: 0, buildings: 0, hotels: 0 } : t);
           msgs.push(`${targetProp.name}을(를) 반값에 매각했습니다.`);
         }

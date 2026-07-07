@@ -164,9 +164,11 @@ const InsolventModal: React.FC = () => {
           
         </div>
 
-        {/* Properties List */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start', width: '100%', flexShrink: 0 }}>
-          <p style={{ color: '#64748b', fontSize: '16px', fontWeight: 'bold', textTransform: 'uppercase', margin: 0 }}>내 현재 자산</p>
+        {isMyTurn ? (
+          <>
+            {/* Properties List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'flex-start', width: '100%', flexShrink: 0 }}>
+              <p style={{ color: '#64748b', fontSize: '16px', fontWeight: 'bold', textTransform: 'uppercase', margin: 0 }}>내 현재 자산</p>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', flexShrink: 0 }}>
             {myProperties.length === 0 ? (
@@ -332,6 +334,15 @@ const InsolventModal: React.FC = () => {
             대출받기
           </button>
         </div>
+        </>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0', gap: '16px' }}>
+            <div style={{ fontSize: '48px' }}>⏳</div>
+            <p style={{ color: '#64748b', fontSize: '20px', fontWeight: 'bold' }}>
+              {currentPlayer.name}님이 자금을 마련하고 있습니다...
+            </p>
+          </div>
+        )}
 
         {/* Hint */}
         <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start', justifyContent: 'center', width: '100%', flexShrink: 0 }}>

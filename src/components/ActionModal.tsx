@@ -107,6 +107,9 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
           <div className={styles.header}>
             <h2 className={styles.title}>{tile.name}</h2>
             <p className={styles.subtitle}>{isMine ? '추가 건물을 건설하시겠습니까?' : '이 땅을 구매하시겠습니까?'}</p>
+            <div style={{ marginTop: '8px', fontSize: '15px', color: '#10b981', fontWeight: 'bold' }}>
+              내 현재 자금: ₩{currentPlayer.cash.toLocaleString()}
+            </div>
           </div>
 
           <div className={styles.card}>
