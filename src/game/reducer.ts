@@ -725,30 +725,63 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
     }
 
     case 'SELL_PROPERTY': {
-      const { tileId } = action.payload;
+      const { tileId, sellType = 'all' } = action.payload;
       const currentPlayer = state.players[state.currentPlayerIndex];
       const tile = state.board[tileId];
 
       if (tile.ownerId !== currentPlayer.id) return state;
 
-      const sellValue = (tile.price || 0) / 2 + 
-                        (tile.villas || 0) * (tile.villaPrice || 0) / 2 + 
-                        (tile.buildings || 0) * (tile.buildingPrice || 0) / 2 + 
-                        (tile.hotels || 0) * (tile.hotelPrice || 0) / 2;
+      let sellValue = 0;
+      let newTile = { ...tile };
+      let message = '';
+
+      if (sellType === 'villa' && tile.villas && tile.villas > 0) {
+        sellValue = tile.villaPrice || 0;
+        newTile.villas -= 1;
+        message = `${currentPlayer.name}님이 ${tile.name}의 별장을 ${sellValue.toLocaleString()}원에 매각했습니다.`;
+      } else if (sellType === 'building' && tile.buildings && tile.buildings > 0) {
+        sellValue = tile.buildingPrice || 0;
+        newTile.buildings -= 1;
+        message = `${currentPlayer.name}님이 ${tile.name}의 빌딩을 ${sellValue.toLocaleString()}원에 매각했습니다.`;
+      } else if (sellType === 'hotel' && tile.hotels && tile.hotels > 0) {
+        sellValue = tile.hotelPrice || 0;
+        newTile.hotels -= 1;
+        message = `${currentPlayer.name}님이 ${tile.name}의 호텔을 ${sellValue.toLocaleString()}원에 매각했습니다.`;
+      } else if (sellType === 'land') {
+        if ((tile.villas || 0) > 0 || (tile.buildings || 0) > 0 || (tile.hotels || 0) > 0) {
+          // Cannot sell land if buildings exist
+          return state;
+        }
+        sellValue = tile.price || 0;
+        newTile.ownerId = null;
+        message = `${currentPlayer.name}님이 ${tile.name}의 대지를 ${sellValue.toLocaleString()}원에 매각했습니다.`;
+      } else if (sellType === 'all') {
+        sellValue = (tile.price || 0) + 
+                    (tile.villas || 0) * (tile.villaPrice || 0) + 
+                    (tile.buildings || 0) * (tile.buildingPrice || 0) + 
+                    (tile.hotels || 0) * (tile.hotelPrice || 0);
+        newTile.ownerId = null;
+        newTile.villas = 0;
+        newTile.buildings = 0;
+        newTile.hotels = 0;
+        message = `${currentPlayer.name}님이 ${tile.name} 전체를 ${sellValue.toLocaleString()}원에 매각했습니다.`;
+      } else {
+        return state;
+      }
 
       const updatedPlayers = state.players.map(p => 
         p.id === currentPlayer.id ? { ...p, cash: p.cash + sellValue } : p
       );
 
       const updatedBoard = state.board.map(t => 
-        t.id === tileId ? { ...t, ownerId: null, villas: 0, buildings: 0, hotels: 0 } : t
+        t.id === tileId ? newTile : t
       );
 
       return {
         ...state,
         players: updatedPlayers,
         board: updatedBoard,
-        messageLog: [...state.messageLog, `${currentPlayer.name}님이 ${tile.name}을(를) 반값(${sellValue}원)에 매각했습니다.`]
+        messageLog: [...state.messageLog, message]
       };
     }
 

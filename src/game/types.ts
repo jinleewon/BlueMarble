@@ -86,7 +86,7 @@ export type GameAction =
   | { type: 'FINISH_PRE_ROLL' }
   | { type: 'TAKE_LOAN' }
   | { type: 'REPAY_LOAN' }
-  | { type: 'SELL_PROPERTY'; payload: { tileId: number } }
+  | { type: 'SELL_PROPERTY'; payload: { tileId: number; sellType?: 'all' | 'villa' | 'building' | 'hotel' | 'land' } }
   | { type: 'TRANSFER_PROPERTY'; payload: { tileId: number; toPlayerId: number } }
   | { type: 'DECLARE_BANKRUPTCY' }
   | { type: 'PAY_PENDING' }
