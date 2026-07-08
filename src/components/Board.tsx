@@ -229,7 +229,7 @@ const Board: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
               }}>
-                <div className={styles.colorBar} style={{ height: '20px', width: '100%', backgroundColor: getTileColor(tile.id), borderBottom: tile.ownerId !== undefined ? `4px solid ${state.players.find(p => p.id === tile.ownerId)?.color}` : 'none' }} />
+                <div className={styles.colorBar} style={{ height: '20px', width: '100%', backgroundColor: getTileColor(tile.id), borderBottom: tile.ownerId ? `4px solid ${state.players.find(p => p.id === tile.ownerId)?.color}` : 'none' }} />
                 <div className={styles.tileContent}>
                   <div className={styles.tileName}>{tile.name}</div>
                   {tile.price && (

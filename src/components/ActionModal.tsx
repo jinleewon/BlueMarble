@@ -93,7 +93,7 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
   const canAfford = currentPlayer.cash >= totalCost;
 
   // Is it unowned or owned by me?
-  if (tile.ownerId === undefined || tile.ownerId === currentPlayer.id) {
+  if (!tile.ownerId || tile.ownerId === currentPlayer.id) {
     const isMine = tile.ownerId === currentPlayer.id;
     
     // Check what is already built
