@@ -125,12 +125,6 @@ const InsolventModal: React.FC = () => {
               자금 마련
             </p>
           </div>
-          <div style={{ width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </div>
         </div>
 
         {/* Summary Box */}
@@ -336,9 +330,9 @@ const InsolventModal: React.FC = () => {
         </div>
         </>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 0', gap: '16px', width: '100%' }}>
             <div style={{ fontSize: '48px' }}>⏳</div>
-            <p style={{ color: '#64748b', fontSize: '20px', fontWeight: 'bold' }}>
+            <p style={{ color: '#64748b', fontSize: '20px', fontWeight: 'bold', margin: 0, textAlign: 'center' }}>
               {currentPlayer.name}님이 자금을 마련하고 있습니다...
             </p>
           </div>
