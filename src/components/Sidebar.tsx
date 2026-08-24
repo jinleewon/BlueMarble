@@ -41,6 +41,13 @@ const Sidebar: React.FC = () => {
   const [selectedDeedId, setSelectedDeedId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState<'log' | 'chat'>('log');
   const [chatInput, setChatInput] = useState('');
+  const [lastReadChatCount, setLastReadChatCount] = useState(state.chatMessages?.length || 0);
+
+  useEffect(() => {
+    if (activeTab === 'chat') {
+      setLastReadChatCount(state.chatMessages?.length || 0);
+    }
+  }, [activeTab, state.chatMessages?.length]);
 
   useEffect(() => {
     if (logRef.current) {
@@ -183,8 +190,14 @@ const Sidebar: React.FC = () => {
           <button 
             className={`${styles.tabBtn} ${activeTab === 'chat' ? styles.activeTab : ''}`}
             onClick={() => setActiveTab('chat')}
+            style={{ position: 'relative' }}
           >
             채팅
+            {(state.chatMessages?.length || 0) > lastReadChatCount && activeTab !== 'chat' && (
+              <span className={styles.unreadBadge}>
+                {(state.chatMessages?.length || 0) - lastReadChatCount > 99 ? '99+' : (state.chatMessages?.length || 0) - lastReadChatCount}
+              </span>
+            )}
           </button>
         </div>
 
