@@ -36,14 +36,35 @@ const AnimatedCash: React.FC<{ cash: number }> = ({ cash }) => {
 const Sidebar: React.FC = () => {
   const { state, dispatch } = useGame();
   const logRef = useRef<HTMLDivElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
   const [showManagementModal, setShowManagementModal] = useState(false);
   const [selectedDeedId, setSelectedDeedId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<'log' | 'chat'>('log');
+  const [chatInput, setChatInput] = useState('');
 
   useEffect(() => {
     if (logRef.current) {
       logRef.current.scrollTop = logRef.current.scrollHeight;
     }
-  }, [state.messageLog]);
+  }, [state.messageLog, activeTab]);
+
+  useEffect(() => {
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    }
+  }, [state.chatMessages, activeTab]);
+
+  const handleSendChat = (e?: React.FormEvent) => {
+    e?.preventDefault();
+    if (!chatInput.trim()) return;
+    
+    const myPlayerId = Number(localStorage.getItem('myPlayerId'));
+    dispatch({ 
+      type: 'SEND_CHAT_MESSAGE', 
+      payload: { playerId: myPlayerId, message: chatInput, timestamp: Date.now() } 
+    });
+    setChatInput('');
+  };
 
   const handleRollDice = () => {
     const d1 = Math.floor(Math.random() * 6) + 1;
@@ -152,11 +173,60 @@ const Sidebar: React.FC = () => {
       })}
 
       <div className={styles.controls}>
-        <div className={styles.logBox} ref={logRef}>
-          {state.messageLog.map((log, i) => (
-            <div key={i} className={styles.logEntry}>[{new Date().toLocaleTimeString('en-US', {hour12:false, hour:'2-digit', minute:'2-digit'})}] {log}</div>
-          ))}
+        <div className={styles.tabsContainer}>
+          <button 
+            className={`${styles.tabBtn} ${activeTab === 'log' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('log')}
+          >
+            시스템 로그
+          </button>
+          <button 
+            className={`${styles.tabBtn} ${activeTab === 'chat' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('chat')}
+          >
+            채팅
+          </button>
         </div>
+
+        {activeTab === 'log' ? (
+          <div className={styles.logBox} ref={logRef}>
+            {state.messageLog.map((log, i) => (
+              <div key={i} className={styles.logEntry}>[{new Date().toLocaleTimeString('en-US', {hour12:false, hour:'2-digit', minute:'2-digit'})}] {log}</div>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.chatBox}>
+            <div className={styles.chatMessages} ref={chatRef}>
+              {state.chatMessages?.map((chat, i) => {
+                const sender = state.players.find(p => p.id === chat.playerId);
+                const isMe = chat.playerId === myPlayerId;
+                return (
+                  <div key={i} className={`${styles.chatMessage} ${isMe ? styles.myMessage : styles.otherMessage}`}>
+                    {!isMe && <div className={styles.chatSender}>{sender?.name || 'Unknown'}</div>}
+                    <div className={styles.chatBubble} style={{ backgroundColor: isMe ? '#3B82F6' : (sender?.color || '#9CA3AF') }}>
+                      {chat.message}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <form className={styles.chatInputContainer} onSubmit={handleSendChat}>
+              <input 
+                type="text" 
+                className={styles.chatInput} 
+                placeholder="메시지를 입력하세요..." 
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+              />
+              <button type="submit" className={styles.chatSendBtn}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M22 2L11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        )}
 
         {state.turnPhase === 'pre_roll' && (
           state.players[state.currentPlayerIndex].isSpaceTravel ? (

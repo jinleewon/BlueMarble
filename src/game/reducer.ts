@@ -22,7 +22,8 @@ export const INITIAL_STATE: GameState = {
   fundBalance: 0,
   chanceDeck: shuffle(CHANCE_CARDS),
   turnPhase: 'idle',
-  messageLog: ['게임을 시작합니다!']
+  messageLog: ['게임을 시작합니다!'],
+  chatMessages: []
 };
 
 export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC_STATE', payload: GameState }): GameState {
@@ -889,6 +890,17 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
         p.id === action.payload.playerId ? { ...p, name: action.payload.name } : p
       );
       return { ...state, players: updatedPlayers };
+    }
+
+    case 'ADD_MESSAGE': {
+      return { ...state, messageLog: [...state.messageLog, action.payload] };
+    }
+
+    case 'SEND_CHAT_MESSAGE': {
+      return { 
+        ...state, 
+        chatMessages: [...state.chatMessages, action.payload]
+      };
     }
 
     default:

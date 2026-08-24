@@ -54,6 +54,12 @@ export interface ChanceCard {
   action: any; // specific action payload
 }
 
+export interface ChatMessage {
+  playerId: number;
+  message: string;
+  timestamp: number;
+}
+
 export interface GameState {
   players: Player[];
   currentPlayerIndex: number;
@@ -63,6 +69,7 @@ export interface GameState {
   fundBalance: number;
   turnPhase: TurnPhase;
   messageLog: string[];
+  chatMessages: ChatMessage[];
   chanceDeck: ChanceCard[];
   activeChanceCard?: ChanceCard | null;
   pendingPayment?: { amount: number; to: number | 'bank'; reason: string } | null;
@@ -95,5 +102,6 @@ export type GameAction =
   | { type: 'ADD_PLAYER'; payload: { name: string, color: string } }
   | { type: 'RENAME_PLAYER'; payload: { playerId: number, name: string } }
   | { type: 'ADD_MESSAGE'; payload: string }
+  | { type: 'SEND_CHAT_MESSAGE'; payload: ChatMessage }
   | { type: 'USE_ESCAPE_CARD' }
   | { type: 'USE_EXEMPTION_CARD' };
