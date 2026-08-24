@@ -455,6 +455,21 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
               msgs.push(`사회복지기금 ${updatedFundBalance.toLocaleString()}원을 수령했습니다!`);
               updatedFundBalance = 0;
             }
+          } else if (card.action.target === 38) {
+            if (me.cash < 150000) {
+              return {
+                ...state,
+                activeChanceCard: null,
+                turnPhase: 'insolvent',
+                pendingPayment: { amount: 150000, to: 'bank', reason: '사회복지기금' },
+                players: state.players.map(p => p.id === me.id ? me : p),
+                lastMovementType: newMovementType,
+                messageLog: [...msgs, `자금이 부족하여 지불 대기 상태가 됩니다.`]
+              };
+            }
+            me.cash -= 150000;
+            updatedFundBalance += 150000;
+            msgs.push('사회복지기금 15만원 납부');
           }
           
           if (card.action.target === 0 || (originalPos > card.action.target && card.action.target !== 30)) {
@@ -475,7 +490,43 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
           newMovementType = card.action.amount > 0 ? 'forward' : 'backward';
           let newPos = me.position + card.action.amount;
           if (newPos < 0) newPos += 40;
+          
+          // Check if passing start going forward
+          if (card.action.amount > 0 && newPos < me.position) {
+            me.cash += 200000;
+            me.hasPassedStart = true;
+            msgs.push('(월급 20만원 획득)');
+          }
+          
           me.position = newPos;
+
+          // Special tile logic
+          if (newPos === 10) {
+            me.islandTurnsLeft = 3;
+          } else if (newPos === 30) {
+            me.isSpaceTravel = true;
+          } else if (newPos === 20) {
+            if (updatedFundBalance > 0) {
+              me.cash += updatedFundBalance;
+              msgs.push(`사회복지기금 ${updatedFundBalance.toLocaleString()}원을 수령했습니다!`);
+              updatedFundBalance = 0;
+            }
+          } else if (newPos === 38) {
+            if (me.cash < 150000) {
+              return {
+                ...state,
+                activeChanceCard: null,
+                turnPhase: 'insolvent',
+                pendingPayment: { amount: 150000, to: 'bank', reason: '사회복지기금' },
+                players: state.players.map(p => p.id === me.id ? me : p),
+                lastMovementType: newMovementType,
+                messageLog: [...msgs, `자금이 부족하여 지불 대기 상태가 됩니다.`]
+              };
+            }
+            me.cash -= 150000;
+            updatedFundBalance += 150000;
+            msgs.push('사회복지기금 15만원 납부');
+          }
           break;
         case 'GET_CASH':
           me.cash += card.action.amount;
