@@ -26,7 +26,7 @@ const InsolventModal: React.FC = () => {
   };
 
   const handleTakeLoan = () => {
-    if (!isMyTurn || currentPlayer.loanAmount > 0) return;
+    if (!isMyTurn || currentPlayer.loanAmount > 0 || currentPlayer.hasTakenLoan) return;
     dispatch({ type: 'TAKE_LOAN' });
   };
 
@@ -309,10 +309,10 @@ const InsolventModal: React.FC = () => {
           
           <button 
             onClick={handleTakeLoan}
-            disabled={currentPlayer.loanAmount > 0 || !isMyTurn}
+            disabled={currentPlayer.loanAmount > 0 || currentPlayer.hasTakenLoan || !isMyTurn}
             style={{
-              backgroundColor: currentPlayer.loanAmount === 0 ? '#10b981' : '#9ca3af',
-              boxShadow: currentPlayer.loanAmount === 0 ? '0px 8px 8px rgba(16,185,129,0.3)' : 'none',
+              backgroundColor: (currentPlayer.loanAmount === 0 && !currentPlayer.hasTakenLoan) ? '#10b981' : '#9ca3af',
+              boxShadow: (currentPlayer.loanAmount === 0 && !currentPlayer.hasTakenLoan) ? '0px 8px 8px rgba(16,185,129,0.3)' : 'none',
               display: 'flex',
               flex: '1 0 0',
               height: '64px',
@@ -320,7 +320,7 @@ const InsolventModal: React.FC = () => {
               justifyContent: 'center',
               borderRadius: '32px',
               border: 'none',
-              cursor: currentPlayer.loanAmount === 0 && isMyTurn ? 'pointer' : 'not-allowed',
+              cursor: (currentPlayer.loanAmount === 0 && !currentPlayer.hasTakenLoan) && isMyTurn ? 'pointer' : 'not-allowed',
               color: 'white',
               fontSize: '18px',
               fontWeight: 800

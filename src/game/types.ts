@@ -15,6 +15,7 @@ export interface Player {
   tokenId?: string;
   loanAmount: number;
   loanTurnsLeft: number;
+  hasTakenLoan: boolean;
   hasPassedStart: boolean;
 }
 

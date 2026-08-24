@@ -13,7 +13,7 @@ export const shuffle = <T>(array: T[]): T[] => {
 
 export const INITIAL_STATE: GameState = {
   players: [
-    { id: 1, name: '나 (1P)', color: '#EF4444', cash: 3000000, position: 0, isActive: true, isInIsland: false, islandTurnsLeft: 0, hasEscapeCard: false, isSpaceTravel: false, loanAmount: 0, loanTurnsLeft: 0, hasPassedStart: false },
+    { id: 1, name: '나 (1P)', color: '#EF4444', cash: 3000000, position: 0, isActive: true, isInIsland: false, islandTurnsLeft: 0, hasEscapeCard: false, isSpaceTravel: false, loanAmount: 0, loanTurnsLeft: 0, hasTakenLoan: false, hasPassedStart: false },
   ],
   currentPlayerIndex: 0,
   board: INITIAL_BOARD,
@@ -551,10 +551,13 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
       if (currentPlayer.loanAmount > 0) {
         return { ...state, messageLog: [...state.messageLog, `이미 대출이 있습니다.`] };
       }
+      if (currentPlayer.hasTakenLoan) {
+        return { ...state, messageLog: [...state.messageLog, `대출은 게임 중 한 번만 가능합니다.`] };
+      }
       
       const updatedPlayers = state.players.map(p => 
         p.id === currentPlayer.id 
-          ? { ...p, cash: p.cash + 1000000, loanAmount: 1000000, loanTurnsLeft: 3 } 
+          ? { ...p, cash: p.cash + 1000000, loanAmount: 1000000, loanTurnsLeft: 3, hasTakenLoan: true } 
           : p
       );
 
@@ -823,6 +826,7 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
             isSpaceTravel: false,
             loanAmount: 0,
             loanTurnsLeft: 0,
+            hasTakenLoan: false,
             hasPassedStart: false
           }
         ]

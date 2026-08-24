@@ -151,7 +151,7 @@ const ManagementModal: React.FC<ManagementModalProps> = ({ onClose }) => {
             <button 
               className={styles.loanBtn} 
               onClick={handleTakeLoan}
-              disabled={currentPlayer.loanAmount > 0}
+              disabled={currentPlayer.loanAmount > 0 || currentPlayer.hasTakenLoan}
             >
               대출 받기
             </button>
