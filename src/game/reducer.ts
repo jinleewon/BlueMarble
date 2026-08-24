@@ -35,16 +35,22 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
       const isTwoPlayers = state.players.length === 2;
       const initialCash = isTwoPlayers ? 6800000 : 3400000;
       
-      const updatedPlayers = state.players.map(p => ({
+      let updatedPlayers = state.players.map(p => ({
         ...p,
         cash: initialCash
       }));
+
+      // Reorder players if playerOrder is provided
+      if (action.payload && action.payload.playerOrder) {
+        const order = action.payload.playerOrder;
+        updatedPlayers = updatedPlayers.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+      }
 
       return {
         ...state,
         players: updatedPlayers,
         turnPhase: 'pre_roll',
-        messageLog: ['게임을 시작합니다!', isTwoPlayers ? '2인 플레이: 시작 자금 680만원' : `시작 자금 ${initialCash/10000}만원`]
+        messageLog: ['게임을 시작합니다!', isTwoPlayers ? '2인 플레이: 시작 자금 680만원' : `시작 자금 ${initialCash/10000}만원`, `첫 번째 턴은 ${updatedPlayers[0].name}님입니다.`]
       };
     }
 

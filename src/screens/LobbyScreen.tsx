@@ -288,7 +288,8 @@ const LobbyScreen: React.FC<LobbyScreenProps> = ({ onBack, onPlay }) => {
                   alert("모든 플레이어가 캐릭터(말)를 선택해야 합니다. 프로필을 클릭하세요!");
                   return;
                 }
-                dispatch({ type: 'START_GAME' });
+                const shuffledIds = [...state.players].map(p => p.id).sort(() => Math.random() - 0.5);
+                dispatch({ type: 'START_GAME', payload: { playerOrder: shuffledIds } });
                 onPlay();
               }}
             >

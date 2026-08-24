@@ -90,7 +90,7 @@ export type GameAction =
   | { type: 'DRAW_CHANCE_CARD'; payload?: { shuffledDeck: ChanceCard[] } }
   | { type: 'APPLY_CHANCE_CARD' }
   | { type: 'END_TURN' }
-  | { type: 'START_GAME' }
+  | { type: 'START_GAME'; payload?: { playerOrder: number[] } }
   | { type: 'FINISH_PRE_ROLL' }
   | { type: 'TAKE_LOAN' }
   | { type: 'REPAY_LOAN' }
