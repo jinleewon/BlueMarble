@@ -18,6 +18,16 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
   const [buyBuilding, setBuyBuilding] = useState(false);
   const [buyHotel, setBuyHotel] = useState(false);
 
+  const myPlayerId = Number(localStorage.getItem('myPlayerId'));
+  const isMyTurn = currentPlayer?.id === myPlayerId;
+
+  // Special tiles (Start, Island, Space, Chance, Fund)
+  React.useEffect(() => {
+    if (isMyTurn && tile && (tile.type === 'chance' || tile.type === 'start')) {
+      dispatch({ type: 'END_TURN' });
+    }
+  }, [tile, dispatch, isMyTurn]);
+
   if (!tile) return null;
 
   const handleEndTurn = () => {
@@ -40,16 +50,6 @@ const ActionModal: React.FC<ActionModalProps> = ({ tileId }) => {
   const formatMoney = (amount: number) => {
     return amount >= 10000 ? `${amount / 10000}만` : amount;
   };
-
-  const myPlayerId = Number(localStorage.getItem('myPlayerId'));
-  const isMyTurn = currentPlayer.id === myPlayerId;
-
-  // Special tiles (Start, Island, Space, Chance, Fund)
-  React.useEffect(() => {
-    if (isMyTurn && tile && (tile.type === 'chance' || tile.type === 'start')) {
-      dispatch({ type: 'END_TURN' });
-    }
-  }, [tile, dispatch, isMyTurn]);
 
   if (tile.type === 'chance' || tile.type === 'start') {
     return null;

@@ -784,14 +784,36 @@ export function gameReducer(state: GameState, action: GameAction | { type: 'SYNC
         ? `🚨 ${currentPlayer.name}님이 파산하여 남은 자금과 모든 자산이 ${creditorName}님에게 양도됩니다!`
         : `🚨 ${currentPlayer.name}님이 은행에 파산했습니다! 모든 자산이 몰수되어 초기화됩니다.`;
 
-      return {
-        ...state,
-        players: updatedPlayers,
-        board: newBoard,
-        turnPhase: 'game_over',
-        pendingPayment: null,
-        messageLog: [...state.messageLog, messageLogAdd]
-      };
+      const activePlayersCount = updatedPlayers.filter(p => p.isActive).length;
+
+      if (activePlayersCount <= 1) {
+        return {
+          ...state,
+          players: updatedPlayers,
+          board: newBoard,
+          turnPhase: 'game_over',
+          pendingPayment: null,
+          messageLog: [...state.messageLog, messageLogAdd, '🎉 최후의 1인이 승리했습니다!']
+        };
+      } else {
+        // 게임 계속 진행 - 다음 플레이어로 턴 넘김
+        let nextPlayerIndex = (state.currentPlayerIndex + 1) % state.players.length;
+        while (!updatedPlayers[nextPlayerIndex].isActive) {
+          nextPlayerIndex = (nextPlayerIndex + 1) % state.players.length;
+        }
+
+        return {
+          ...state,
+          players: updatedPlayers,
+          board: newBoard,
+          currentPlayerIndex: nextPlayerIndex,
+          diceResult: null,
+          doubleCount: 0,
+          turnPhase: 'pre_roll',
+          pendingPayment: null,
+          messageLog: [...state.messageLog, messageLogAdd, `다음 차례: ${updatedPlayers[nextPlayerIndex].name}님`]
+        };
+      }
     }
 
     case 'SELL_PROPERTY': {

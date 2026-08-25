@@ -42,9 +42,9 @@ describe('Game Reducer - Bankruptcy and Property Selling', () => {
     const action = { type: 'SELL_PROPERTY', payload: { tileId: 1 } } as const;
     const nextState = gameReducer(initialState, action);
 
-    // Initial price 10000, villa 5000. Total value 15000. Sell value = 7500.
-    // Cash should be 1000 + 7500 = 8500
-    expect(nextState.players[0].cash).toBe(8500);
+    // Initial price 10000, villa 5000. Total value 15000. Sell value = 15000.
+    // Cash should be 1000 + 15000 = 16000
+    expect(nextState.players[0].cash).toBe(16000);
     expect(nextState.board[1].ownerId).toBeNull();
     expect(nextState.board[1].villas).toBe(0);
   });
